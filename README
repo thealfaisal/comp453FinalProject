@@ -8,8 +8,7 @@ Users: Customers
 Mission: To lease cars nationwide
 Purpose: Reserve cars that are to be leased online with their pickup location
 This application will be used to provide the service nationwide to achieve the mission 
-[ER]: https://drive.google.com/open?id=1OnMtfz5SjP1UoFWtiay8oQ4NXaLkNRGN
-[I'm an inline-style link](https://www.google.com)
+
 As a user:
 User register to the website and logs in
 User home page showing search criterias to look for a car by Brand, Model, Year, and other criterion
