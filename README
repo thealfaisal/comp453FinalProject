@@ -72,3 +72,9 @@ CONSTRAINT Loc_FK1 FOREIGN KEY (locationID)
   	REFERENCES Customer(customerID),
   CONSTRAINT VehReserv_FK1 FOREIGN KEY (vehicleID)
     	REFERENCES Vehicle(vehicleID));
+
+
+App Functionality:
++ Search Page similar to Orbitz Car Lease Reservation (Customer fill pickuplocation, dropoffLocation, dateFrom, dateTo, timeTo and timeFrom)
++ Then a of vehicles based on search will be listed with vehicle info, rate and reserve button
++ Finally the customer will fill additional information and reserve
