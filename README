@@ -60,7 +60,6 @@ CONSTRAINT Loc_FK1 FOREIGN KEY (locationID)
   CREATE TABLE Reservation
                (customerID          int     NOT NULL,
   	      vehicleID        int NOT NULL ,
-  	      engineNumber     VARCHAR(30) ,
                 dateFrom        date ,
                 dateTo       date ,
                 timeFrom  time  ,
@@ -79,4 +78,43 @@ App Functionality:
 + Then a of vehicles based on search will be listed with vehicle info, rate and reserve button
 + Finally the customer will fill additional information and reserve
 
-Inserting sample data is on progress
+Customer Insert:
+
+INSERT INTO customer (username, password, email, firstName, middleName, lastName,phoneNumber, state, city,zipcode, Address)
+VALUES ('fly', 'rebel','fu@gmail.com','Filli','Gov','Dan','7736530011','IL', 'Chicago', '60603','405 N. Street');
+
+INSERT INTO customer (username, password, email, firstName, middleName, lastName,phoneNumber, state, city,zipcode, Address)
+VALUES ('Zon', 'did','zoo@gmail.com','Xaomi','Zen','Fifi','3126530011','NY', 'NY City', '40005','1205 S. Street');
+
+INSERT INTO customer (username, password, email, firstName, middleName, lastName,phoneNumber, state, city,zipcode, Address)
+VALUES ('Zon', 'did','zoo@gmail.com','Xaomi','Zen','Fifi','3126530011','NY', 'NY City', '40005','1205 S. Street');
+
+Location insert:
+
+INSERT INTO location (locationName, state, city,zipcode)
+VALUES ('Addison', 'IL', 'Chicago', '60002');
+
+INSERT INTO location (locationName, state, city,zipcode)
+VALUES ('Hyde Park', 'IL', 'Chicago', '60003');
+
+INSERT INTO location (locationName, state, city,zipcode)
+VALUES ('Anderson ville', 'TX', 'Huston', '51003');
+
+Vehicle insert:
+
+INSERT INTO vehicle (plateNumber,vinNumber, engineNumber, brandName, image, modelName, mpg, rate, style, transmission, trimLevel, Year, locationID)
+VALUES ('ZD982370', '1C6RR7TT2ES224336', '6U90000BB41202329', 'BMW', 'bmw1.png','I3',16,70,'Sedan','Automatic','SE',2017,103);
+
+INSERT INTO vehicle (plateNumber,vinNumber, engineNumber, brandName, image, modelName, mpg, rate, style, transmission, trimLevel, Year, locationID)
+VALUES ('ZD901256', '1C6RR7TT2ES200336', '1U90880BB41202329', 'TOYOTA', 'toyota1.png','Corolla',29,72,'Sedan','Automatic','LE',2016,102);
+
+INSERT INTO vehicle (plateNumber,vinNumber, engineNumber, brandName, image, modelName, mpg, rate, style, transmission, trimLevel, Year, locationID)
+VALUES ('ZI037816', '1C6RR7CC2ES200336', '1U90880BB41808329', 'HONDA', 'honda1.png','Civic',25,69,'Sedan','Automatic','LX',2017,101);
+
+Reservation insert:
+
+INSERT INTO reservation (customerID,vehicleID, pickupLocation, dropoffLocation, dateFrom, dateTo, timeFrom, timeTo)
+VALUES (100003, 10002, 'Addison', 'Anderson ville', '2018-12-04', '2018-12-01', '10:30:00', '12:00:00');
+
+INSERT INTO reservation (customerID,vehicleID, pickupLocation, dropoffLocation, dateFrom, dateTo, timeFrom, timeTo)
+VALUES (100001, 10003, 'Hyde Park', 'Addison', '2018-12-05', '2018-12-10', '8:30:00', '4:00:00');
