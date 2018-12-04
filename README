@@ -54,7 +54,7 @@ CONSTRAINT Vehicle_PK PRIMARY KEY (vehicleID),
 CONSTRAINT Loc_FK1 FOREIGN KEY (locationID)
 	REFERENCES Location(locationID));
 
-  ALTER TABLE Location AUTO_INCREMENT=101;
+  ALTER TABLE Vehicle AUTO_INCREMENT=10001;
 
 
   CREATE TABLE Reservation
@@ -78,3 +78,5 @@ App Functionality:
 + Search Page similar to Orbitz Car Lease Reservation (Customer fill pickuplocation, dropoffLocation, dateFrom, dateTo, timeTo and timeFrom)
 + Then a of vehicles based on search will be listed with vehicle info, rate and reserve button
 + Finally the customer will fill additional information and reserve
+
+Inserting sample data is on progress
