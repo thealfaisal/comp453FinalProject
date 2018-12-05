@@ -3,7 +3,7 @@ import secrets
 from PIL import Image
 from flask import render_template, url_for, flash, redirect, request, abort
 from flaskDemo import app, db, bcrypt
-from flaskDemo.forms import RegistrationForm, LoginForm
+from flaskDemo.forms import RegistrationForm, LoginForm, SearchForm,UpdateAccountForm
 from flaskDemo.models import Customer, Vehicle, Reservation, Location
 from flask_login import login_user, current_user, logout_user, login_required
 from datetime import datetime
@@ -12,6 +12,7 @@ from datetime import datetime
 @app.route("/")
 @app.route("/home")
 def home():
+    form = SearchForm()
     """
     results = Department.query.all()
     return render_template('dept_home.html', outString = results)
@@ -23,7 +24,7 @@ def home():
     results = Faculty.query.join(Qualified,Faculty.facultyID == Qualified.facultyID) \
               .add_columns(Faculty.facultyID, Faculty.facultyName, Qualified.Datequalified, Qualified.courseID)
               """
-    return render_template('home.html', title='home')
+    return render_template('home.html', title='home', form=form)
 
 
 
@@ -40,8 +41,8 @@ def register():
     form = RegistrationForm()
     if form.validate_on_submit():
         hashed_password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
-        user = User(username=form.username.data, email=form.email.data, password=hashed_password)
-        db.session.add(user)
+        customer = Customer(username=form.username.data, email=form.email.data, password=hashed_password)
+        db.session.add(customer)
         db.session.commit()
         flash('Your account has been created! You are now able to log in', 'success')
         return redirect(url_for('login'))
@@ -54,9 +55,9 @@ def login():
         return redirect(url_for('home'))
     form = LoginForm()
     if form.validate_on_submit():
-        user = User.query.filter_by(email=form.email.data).first()
-        if user and bcrypt.check_password_hash(user.password, form.password.data):
-            login_user(user, remember=form.remember.data)
+        customer = Customer.query.filter_by(email=form.email.data).first()
+        if customer and bcrypt.check_password_hash(customer.password, form.password.data):
+            login_user(customer, remember=form.remember.data)
             next_page = request.args.get('next')
             return redirect(next_page) if next_page else redirect(url_for('home'))
         else:
@@ -69,7 +70,7 @@ def logout():
     logout_user()
     return redirect(url_for('home'))
 
-"""
+
 def save_picture(form_picture):
     random_hex = secrets.token_hex(8)
     _, f_ext = os.path.splitext(form_picture.filename)
@@ -118,7 +119,7 @@ def new_dept():
     return render_template('create_dept.html', title='New Department',
                            form=form, legend='New Department')
 
-
+"""
 @app.route("/dept/<dnumber>")
 @login_required
 def dept(dnumber):
@@ -160,6 +161,4 @@ def delete_dept(dnumber):
     db.session.commit()
     flash('The department has been deleted!', 'success')
     return redirect(url_for('home'))
-
-
-    """
+"""

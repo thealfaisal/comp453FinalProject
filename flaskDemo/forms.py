@@ -8,21 +8,24 @@ from flaskDemo import db
 from flaskDemo.models import Customer, Location, Reservation, Vehicle
 from wtforms.fields.html5 import DateField
 
+locs = Location.query.with_entities(Location.locationID,Location.locationName).distinct()
 # ssns = Department.query.with_entities(Department.mgr_ssn).distinct()
 #  or could have used ssns = db.session.query(Department.mgr_ssn).distinct()
 # for that way, we would have imported db from flaskDemo, see above
+
+myChoices2 = [(row[1],row[1]) for row in locs]  # change
 """
-myChoices2 = [(row[0],row[0]) for row in ssns]  # change
 results=list()
 for row in ssns:
     rowDict=row._asdict()
     results.append(rowDict)
 myChoices = [(row['mgr_ssn'],row['mgr_ssn']) for row in results]
+"""
 regex1='^((((19|20)(([02468][048])|([13579][26]))-02-29))|((20[0-9][0-9])|(19[0-9][0-9]))-((((0[1-9])'
 regex2='|(1[0-2]))-((0[1-9])|(1\d)|(2[0-8])))|((((0[13578])|(1[02]))-31)|(((0[1,3-9])|(1[0-2]))-(29|30)))))$'
 regex=regex1 + regex2
 
-"""
+
 
 
 class RegistrationForm(FlaskForm):
@@ -36,12 +39,12 @@ class RegistrationForm(FlaskForm):
     submit = SubmitField('Sign Up')
 
     def validate_username(self, username):
-        user = User.query.filter_by(username=username.data).first()
+        user = Customer.query.filter_by(username=username.data).first()
         if user:
             raise ValidationError('That username is taken. Please choose a different one.')
 
     def validate_email(self, email):
-        user = User.query.filter_by(email=email.data).first()
+        user = Customer.query.filter_by(email=email.data).first()
         if user:
             raise ValidationError('That email is taken. Please choose a different one.')
 
@@ -53,7 +56,16 @@ class LoginForm(FlaskForm):
     remember = BooleanField('Remember Me')
     submit = SubmitField('Login')
 
-"""
+class SearchForm(FlaskForm):
+    Pickingup = SelectField("Picking up", choices=myChoices2)
+    Dropoff = SelectField("Dropping off", choices=myChoices2)
+    Pickupdate = DateField("Pickup Date",validators=[Regexp(regex)])
+    Pickuptime = StringField('Pickup Time')
+    Dropoffdate = DateField("Dropoff Date",validators=[Regexp(regex)])
+    Dropofftime = StringField('Dropoff Time')
+    submit = SubmitField('Search')
+
+
 class UpdateAccountForm(FlaskForm):
     username = StringField('Username',
                            validators=[DataRequired(), Length(min=2, max=20)])
@@ -73,7 +85,7 @@ class UpdateAccountForm(FlaskForm):
             user = User.query.filter_by(email=email.data).first()
             if user:
                 raise ValidationError('That email is taken. Please choose a different one.')
-
+"""
 class PostForm(FlaskForm):
     title = StringField('Title', validators=[DataRequired()])
     content = TextAreaField('Content', validators=[DataRequired()])

@@ -6,11 +6,11 @@ from sqlalchemy import orm
 
 db.Model.metadata.reflect(db.engine)
 
-"""
-@login_manager.user_loader
-def load_user(user_id):
-    return User.query.get(int(user_id))
 
+@login_manager.user_loader
+def load_user(customerID):
+    return Customer.query.get(int(customerID))
+"""
 
 class User(db.Model, UserMixin):
     __table_args__ = {'extend_existing': True}
@@ -40,8 +40,9 @@ class Post(db.Model):
 
 
 
-class Customer(db.Model):
+class Customer(db.Model,UserMixin):
     __table__ = db.Model.metadata.tables['customer']
+    def get_id(self): return (self.customerID)
 
 class Vehicle(db.Model):
     __table__ = db.Model.metadata.tables['vehicle']

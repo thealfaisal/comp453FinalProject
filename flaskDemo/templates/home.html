@@ -1,65 +1,103 @@
 {% extends "layout.html" %}
 {% block content %}
-<!--
-    {% for post in posts %}
-        <article class="media content-section">
-          <img class="rounded-circle article-img" src="{{ url_for('static', filename='profile_pics/' + post.author.image_file) }}">
-          <div class="media-body">
-            <div class="article-metadata">
-              <a class="mr-2" href="#">{{ post.author.username }}</a>
-              <small class="text-muted">{{ post.date_posted.strftime('%Y-%m-%d') }}</small>
-            </div>
-            <h2><a class="article-title" href="{{ url_for('post', post_id=post.id) }}">{{ post.title }}</a></h2>
-            <p class="article-content">{{ post.content }}</p>
+    <div class="content-section">
+        <form method="POST" action="">
+            <fieldset class="form-group">
+                <legend class="border-bottom mb-4">Looking for Car</legend>
+                <div class="row">
+                  <div class="form-group col-sm-6">
+                      {{ form.Pickingup.label(class="form-control-label") }}
+
+                      {% if form.Pickingup.errors %}
+                          {{ form.Pickingup(class="form-control form-control-lg is-invalid") }}
+                          <div class="invalid-feedback">
+                              {% for error in form.Pickingup.errors %}
+                                  <span>{{ error }}</span>
+                              {% endfor %}
+                          </div>
+                      {% else %}
+                          {{ form.Pickingup(class="form-control form-control-lg") }}
+                      {% endif %}
+                  </div>
+                  <div class="form-group col-sm-6">
+                      {{ form.Dropoff.label(class="form-control-label") }}
+
+                      {% if form.Dropoff.errors %}
+                          {{ form.Dropoff(class="form-control form-control-lg is-invalid") }}
+                          <div class="invalid-feedback">
+                              {% for error in form.Dropoff.errors %}
+                                  <span>{{ error }}</span>
+                              {% endfor %}
+                          </div>
+                      {% else %}
+                          {{ form.Dropoff(class="form-control form-control-lg") }}
+                      {% endif %}
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="form-group col-sm-6">
+                    {{ form.Pickupdate.label(class="form-control-label") }}
+
+                    {% if form.Pickupdate.errors %}
+                        {{ form.Pickupdate(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.Pickupdate.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.Pickupdate(class="form-control form-control-lg") }}
+                    {% endif %}
+                  </div>
+                  <div class="form-group col-sm-6">
+                    {{ form.Pickuptime.label(class="form-control-label") }}
+
+                    {% if form.Pickuptime.errors %}
+                        {{ form.Pickuptime(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.Pickuptime.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <input type="time" value={{ form.Pickuptime(class="form-control form-control-lg") }}
+                    {% endif %}
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="form-group col-sm-6">
+                    {{ form.Dropoffdate.label(class="form-control-label") }}
+
+                    {% if form.Dropoffdate.errors %}
+                        {{ form.Dropoffdate(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.Dropoffdate.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form.Dropoffdate(class="form-control form-control-lg") }}
+                    {% endif %}
+                  </div>
+                  <div class="form-group col-sm-6">
+                    {{ form.Dropofftime.label(class="form-control-label") }}
+
+                    {% if form.Dropofftime.errors %}
+                        {{ form.Dropofftime(class="form-control form-control-lg is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for error in form.Dropofftime.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <input type="time" value={{ form.Dropofftime(class="form-control form-control-lg") }}
+                    {% endif %}
+                  </div>
+                </div>
+                <div class="form-group">
+                    {{ form.submit(class="btn btn-outline-info") }}
+                </div>
+              </fieldset>
+            </form>
           </div>
-        </article>
-    {% endfor %}  -->
-    <article class="media content-section">
-      <!--<img class="rounded-circle article-img" src="profile_pics/default.jpg"> -->
-      <form method="POST" action="" class="col-md-12 col-sm-12">
-          <div class="form-group col-md-12 col-sm-12">
-            <div class="row">
-              <div class="col-md-4 col-sm-4">
-                <label for="pickingup">Pickup Location</label>
-                <input type="text" name="pickup" />
-              </div>
-              <div class="col-md-4 col-sm-4">
-                <label for="Dropoff">Dropoff Location</label>
-                <input type="text" name="dropoff" />
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-md-4 col-sm-4">
-                <label for="dateFrom">Pickup Date</label>
-                <input type="text" name="dateFrom" />
-              </div>
-              <div class="col-md-4 col-sm-4">
-                <label for="timeFrom">Pickup Time</label>
-                <input type="text" name="timeFrom" value="">
-              </div>
-            </div>
-              <div class="row">
-                <div class="col-md-4 col-sm-4">
-                  <label for="dateTo">Dropoff Date</label>
-                  <input type="text" name="dateTo" />
-                </div>
-                <div class="col-md-4 col-sm-4">
-                  <label for="timeTo">Dropoff Time</label>
-                  <input type="text" name="timeTo" value="">
-                </div>
-              </div>
-            </div>
-            <div class="col-md-12 col-sm-12">
-              <div class="row">
-                <div class="col-md-4 col-sm-4">
-                  <label for="cartype">Car Type</label>
-                  <input type="text" name="cartype" />
-                </div>
-                <div class="col-md-4 col-sm-4">
-                  <input type="submit" name="submit" value="Search" style="margin-top: 30px;">
-                </div>
-              </div>
-            </div>
-          </form>
-    </article>
 {% endblock content %}
