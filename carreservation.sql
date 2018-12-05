@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 05, 2018 at 12:53 AM
+-- Generation Time: Dec 05, 2018 at 07:50 AM
 -- Server version: 10.1.34-MariaDB
 -- PHP Version: 7.2.8
 
@@ -42,17 +42,19 @@ CREATE TABLE `customer` (
   `city` varchar(20) DEFAULT NULL,
   `state` varchar(20) DEFAULT NULL,
   `zipcode` varchar(20) DEFAULT NULL,
-  `admin` tinyint(1) DEFAULT '0'
+  `admin` tinyint(1) DEFAULT '0',
+  `image_file` varchar(30) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `customer`
 --
 
-INSERT INTO `customer` (`customerID`, `username`, `firstName`, `middleName`, `lastName`, `email`, `password`, `phoneNumber`, `Address`, `city`, `state`, `zipcode`, `admin`) VALUES
-(100001, 'fly', 'Filli', 'Gov', 'Dan', 'fu@gmail.com', 'rebel', '7736530011', '405 N. Street', 'Chicago', 'IL', '60603', 0),
-(100003, 'Zon', 'Xaomi', 'Zen', 'Fifi', 'zoo@gmail.com', 'did', '3126530011', '1205 S. Street', 'NY City', 'NY', '40005', 0),
-(100004, 'Bio', 'Amy', 'Con', 'Dov', 'vbv@gmail.com', 'pip', '3126533121', '1100 W. Street', 'Huston', 'TX', '50002', 0);
+INSERT INTO `customer` (`customerID`, `username`, `firstName`, `middleName`, `lastName`, `email`, `password`, `phoneNumber`, `Address`, `city`, `state`, `zipcode`, `admin`, `image_file`) VALUES
+(100001, 'fly', 'Filli', 'Gov', 'Dan', 'fu@gmail.com', 'rebel', '7736530011', '405 N. Street', 'Chicago', 'IL', '60603', 0, NULL),
+(100003, 'Zon', 'Xaomi', 'Zen', 'Fifi', 'zoo@gmail.com', 'did', '3126530011', '1205 S. Street', 'NY City', 'NY', '40005', 0, NULL),
+(100004, 'Bio', 'Amy', 'Con', 'Dov', 'vbv@gmail.com', 'pip', '3126533121', '1100 W. Street', 'Huston', 'TX', '50002', 0, NULL),
+(100005, 'Elli', NULL, NULL, NULL, 'elliam@yahoo.com', '$2b$12$y0vqHTRVk3FGWVYlKEU1De4gFrZw0nSW9SymoFDGOnzuE3s2xqnpu', NULL, NULL, NULL, NULL, NULL, 0, 'default.jpg');
 
 -- --------------------------------------------------------
 
@@ -177,7 +179,7 @@ ALTER TABLE `vehicle`
 -- AUTO_INCREMENT for table `customer`
 --
 ALTER TABLE `customer`
-  MODIFY `customerID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=100005;
+  MODIFY `customerID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=100006;
 
 --
 -- AUTO_INCREMENT for table `location`
