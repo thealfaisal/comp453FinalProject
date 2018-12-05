@@ -1,5 +1,6 @@
 {% extends "layout.html" %}
 {% block content %}
+<!--
     {% for post in posts %}
         <article class="media content-section">
           <img class="rounded-circle article-img" src="{{ url_for('static', filename='profile_pics/' + post.author.image_file) }}">
@@ -12,5 +13,54 @@
             <p class="article-content">{{ post.content }}</p>
           </div>
         </article>
-    {% endfor %}
+    {% endfor %}  -->
+    <article class="media content-section">
+      <!--<img class="rounded-circle article-img" src="profile_pics/default.jpg"> -->
+      <form method="POST" action="" class="col-md-12 col-sm-12">
+          <div class="form-group col-md-12 col-sm-12">
+            <div class="row">
+              <div class="col-md-4 col-sm-4" style="margin-right:10px;">
+                <label for="pickingup">Pickup Location</label>
+                <input type="text" name="pickup" />
+              </div>
+              <div class="col-md-4 col-sm-4">
+                <label for="Dropoff">Dropoff Location</label>
+                <input type="text" name="dropoff" />
+              </div>
+            </div>
+          <div class="form-group col-md-12 col-sm-12">
+            <div class="row">
+              <div class="col-md-4 col-sm-4" style="margin-right:10px;">
+                <label for="dateFrom">Pickup Date</label>
+                <input type="text" name="dateFrom" />
+              </div>
+              <div class="col-md-4 col-sm-4">
+                <label for="timeFrom">Pickup Time</label>
+                <input type="text" name="timeFrom" value="">
+              </div>
+            </div>
+            <div class="form-group col-md-12 col-sm-12">
+                <div class="row">
+                  <div class="col-md-4 col-sm-4" style="margin-right:10px;">
+                    <label for="dateTo">Dropoff Date</label>
+                    <input type="text" name="dateTo" />
+                  </div>
+                  <div class="col-md-4 col-sm-4">
+                    <label for="timeTo">Dropoff Time</label>
+                    <input type="text" name="timeTo" value="">
+                  </div>
+                </div>
+              </div>
+          </div>
+          <div class="form-group">
+            <label for="cartype">Car Type</label>
+            <input type="text" name="cartype" />
+          </div>
+          <div class="form-group col-md-12 col-sm-12">
+            <div class="row">
+              <input type="submit" name="submit" value="Search">
+            </div>
+          </div>
+      </form>
+    </article>
 {% endblock content %}

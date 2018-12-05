@@ -6,6 +6,7 @@ from sqlalchemy import orm
 
 db.Model.metadata.reflect(db.engine)
 
+"""
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))
@@ -35,18 +36,18 @@ class Post(db.Model):
      def __repr__(self):
          return f"Post('{self.title}', '{self.date_posted}')"
 
+"""
 
 
 
+class Customer(db.Model):
+    __table__ = db.Model.metadata.tables['customer']
 
-
-class Dependent(db.Model):
-    __table__ = db.Model.metadata.tables['dependent']
-    
-class Department(db.Model):
-    __table__ = db.Model.metadata.tables['department']
+class Vehicle(db.Model):
+    __table__ = db.Model.metadata.tables['vehicle']
 
 # used for query_factory
+"""
 def getDepartment(columns=None):
     u = Department.query
     if columns:
@@ -55,17 +56,17 @@ def getDepartment(columns=None):
 
 def getDepartmentFactory(columns=None):
     return partial(getDepartment, columns=columns)
+"""
 
-class Dept_Locations(db.Model):
-    __table__ = db.Model.metadata.tables['dept_locations']
-    
-class Employee(db.Model):
-    __table__ = db.Model.metadata.tables['employee']
+class Location(db.Model):
+    __table__ = db.Model.metadata.tables['location']
+
+class Reservation(db.Model):
+    __table__ = db.Model.metadata.tables['reservation']
+
+"""
 class Project(db.Model):
     __table__ = db.Model.metadata.tables['project']
 class Works_On(db.Model):
     __table__ = db.Model.metadata.tables['works_on']
-
-    
-
-  
+"""

@@ -3,8 +3,8 @@ import secrets
 from PIL import Image
 from flask import render_template, url_for, flash, redirect, request, abort
 from flaskDemo import app, db, bcrypt
-from flaskDemo.forms import RegistrationForm, LoginForm, UpdateAccountForm, PostForm, DeptForm,DeptUpdateForm
-from flaskDemo.models import User, Post,Department, Dependent, Dept_Locations, Employee, Project, Works_On
+from flaskDemo.forms import RegistrationForm, LoginForm
+from flaskDemo.models import Customer, Vehicle, Reservation, Location
 from flask_login import login_user, current_user, logout_user, login_required
 from datetime import datetime
 
@@ -12,6 +12,7 @@ from datetime import datetime
 @app.route("/")
 @app.route("/home")
 def home():
+    """
     results = Department.query.all()
     return render_template('dept_home.html', outString = results)
     posts = Post.query.all()
@@ -21,9 +22,10 @@ def home():
                .join(Course, Course.courseID == Qualified.courseID).add_columns(Course.courseName)
     results = Faculty.query.join(Qualified,Faculty.facultyID == Qualified.facultyID) \
               .add_columns(Faculty.facultyID, Faculty.facultyName, Qualified.Datequalified, Qualified.courseID)
-    return render_template('join.html', title='Join',joined_1_n=results, joined_m_n=results2)
+              """
+    return render_template('home.html', title='home')
 
-   
+
 
 
 @app.route("/about")
@@ -67,7 +69,7 @@ def logout():
     logout_user()
     return redirect(url_for('home'))
 
-
+"""
 def save_picture(form_picture):
     random_hex = secrets.token_hex(8)
     _, f_ext = os.path.splitext(form_picture.filename)
@@ -139,7 +141,7 @@ def update_dept(dnumber):
         db.session.commit()
         flash('Your department has been updated!', 'success')
         return redirect(url_for('dept', dnumber=dnumber))
-    elif request.method == 'GET':             
+    elif request.method == 'GET':
         form.dnumber.data = dept.dnumber   # notice that we ARE passing the dnumber to the form
         form.dname.data = dept.dname
         form.mgr_ssn.data = dept.mgr_ssn
@@ -158,3 +160,6 @@ def delete_dept(dnumber):
     db.session.commit()
     flash('The department has been deleted!', 'success')
     return redirect(url_for('home'))
+
+
+    """
