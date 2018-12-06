@@ -1,0 +1,27 @@
+{% extends "layout.html" %}
+{% block content %}
+  <h4>Welcome...</h4>
+  <hr>
+  <p><i><u>Your Search result...</u></i></p>
+  <p>{{ pickup }}  ...  {{ Pickupdate }} ...  {{ Pickuptime }}</p>
+  <p>{{ Dropoff }} ...  {{ Dropoffdate }} ... {{ Dropofftime }}</p>
+  <hr>
+  <hr>
+  <p>Cars available for lease around {{ pickup }}...</p>
+  {% for row in results %}
+      <article class="media content-section">
+        <div class="media-body">
+          <div class="article-metadata">
+            <!--<a class="mr-2" href="#">{{ row }}</a> <br/> -->
+            <p><small class="text-muted"><b>{{ row.style }}</b></small></p>
+            <p><small class="text-muted">{{ row.BrandName }}</small></p>
+            <p><small class="text-muted">Rate: {{ row.rate }}</small></p>
+            <p><small class="text-muted"><b>{{ row.ModelName }}</b> .. {{ row.trimLevel }}</small></p>
+            <div>
+              <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{{ url_for('register', style=row.style) }}">Reserve</a>
+            </div>
+          </div>
+        </div>
+      </article>
+   {% endfor %}
+{% endblock content %}

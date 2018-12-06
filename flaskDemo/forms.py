@@ -1,7 +1,7 @@
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileAllowed
 from flask_login import current_user
-from wtforms import StringField, PasswordField, SubmitField, BooleanField, TextAreaField, IntegerField, DateField, SelectField, HiddenField
+from wtforms import StringField, PasswordField, SubmitField, BooleanField, TextAreaField, IntegerField, DateField, SelectField, HiddenField,DateTimeField
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError,Regexp
 from wtforms.ext.sqlalchemy.fields import QuerySelectField
 from flaskDemo import db
@@ -131,3 +131,6 @@ class DeptForm(DeptUpdateForm):
         if dept:
             raise ValidationError('That department number is taken. Please choose a different one.')
 """
+def __init__(self, *args, **kwargs):
+    kwargs['csrf_enabled'] = False
+    super(WorksOnForm, self).__init__(*args, **kwargs)

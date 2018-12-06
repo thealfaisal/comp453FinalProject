@@ -10,23 +10,36 @@ from datetime import datetime
 
 
 @app.route("/")
-@app.route("/home")
+@app.route("/home", methods=['GET'])
 def home():
     form = SearchForm()
+    if form.validate_on_submit():
+        return redirect(url_for('list'))
     """
     results = Department.query.all()
     return render_template('dept_home.html', outString = results)
     posts = Post.query.all()
     return render_template('home.html', posts=posts)
-    results2 = Faculty.query.join(Qualified,Faculty.facultyID == Qualified.facultyID) \
-               .add_columns(Faculty.facultyID, Faculty.facultyName, Qualified.Datequalified, Qualified.courseID) \
-               .join(Course, Course.courseID == Qualified.courseID).add_columns(Course.courseName)
+    results2 = Vehicle.query.join(Location,Vehicle.locationID == Location.locationID,locationName=form.Pickingup.data) \
+               .add_columns(Vehicle.facultyID, Faculty.facultyName, Qualified.Datequalified, Qualified.courseID)
     results = Faculty.query.join(Qualified,Faculty.facultyID == Qualified.facultyID) \
               .add_columns(Faculty.facultyID, Faculty.facultyName, Qualified.Datequalified, Qualified.courseID)
               """
     return render_template('home.html', title='home', form=form)
 
-
+@app.route("/list", methods=['POST'])
+def list():
+    form = SearchForm()
+    pickup = form.Pickingup.data
+    Dropoff = form.Dropoff.data
+    Pickupdate = form.Pickupdate.data
+    Pickuptime = form.Pickuptime.data
+    Dropofftime = form.Dropofftime.data
+    Dropoffdate = form.Dropoffdate.data
+    results = Vehicle.query.join(Location,Vehicle.locationID == Location.locationID) \
+    .filter(Location.locationName == pickup)\
+    .add_columns(Vehicle.style, Vehicle.BrandName, Vehicle.rate, Vehicle.ModelName,Vehicle.trimLevel)
+    return render_template('list.html', title='Cars List', pickup=pickup, Dropoff=Dropoff,Pickupdate=Pickupdate, Pickuptime=Pickuptime, Dropofftime=Dropofftime, Dropoffdate=Dropoffdate,results=results)
 
 
 @app.route("/about")
@@ -36,8 +49,10 @@ def about():
 
 @app.route("/register", methods=['GET', 'POST'])
 def register():
+    """
     if current_user.is_authenticated:
         return redirect(url_for('home'))
+        """
     form = RegistrationForm()
     if form.validate_on_submit():
         hashed_password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
