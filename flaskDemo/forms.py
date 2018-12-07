@@ -58,21 +58,12 @@ class LoginForm(FlaskForm):
     submit = SubmitField('Login')
 
 class SearchForm(FlaskForm):
-<<<<<<< HEAD
-    Pickingup = SelectField("Pick up location", choices=myChoices2)
-    Dropoff = SelectField("Drop off location", choices=myChoices2)
-    Pickupdate = DateField("Pickup Date",validators=[Regexp(regex)])
-    Pickuptime = StringField('Pickup Time')
-    Dropoffdate = DateField("Dropoff Date",validators=[Regexp(regex)])
-    Dropofftime = StringField('Dropoff Time')
-=======
     Pickingup = SelectField("Picking up", choices=myChoices2)
     Dropoff = SelectField("Dropping off", choices=myChoices2)
     Pickupdate = DateField("Pickup Date", validators=[Required()])
     Pickuptime = TimeField("Pickup Time",validators=[Required()])
     Dropoffdate = DateField("Dropoff Date", validators=[Required()])
     Dropofftime = TimeField("Dropoff Time",validators=[Required()])
->>>>>>> 25569e56a44da7a1eadd35c1c0467afdaf827714
     submit = SubmitField('Search')
 
     def validate_Dropoffdate(self, Dropoffdate):
@@ -85,20 +76,25 @@ class UpdateAccountForm(FlaskForm):
                            validators=[DataRequired(), Length(min=2, max=20)])
     email = StringField('Email',
                         validators=[DataRequired(), Email()])
+    address = StringField('Address')
+    city = StringField('City')
     picture = FileField('Update Profile Picture', validators=[FileAllowed(['jpg', 'png'])])
     submit = SubmitField('Update')
 
     def validate_username(self, username):
         if username.data != current_user.username:
-            user = User.query.filter_by(username=username.data).first()
+            user = Customer.query.filter_by(username=username.data).first()
             if user:
                 raise ValidationError('That username is taken. Please choose a different one.')
 
     def validate_email(self, email):
         if email.data != current_user.email:
-            user = User.query.filter_by(email=email.data).first()
+            user = Customer.query.filter_by(email=email.data).first()
             if user:
                 raise ValidationError('That email is taken. Please choose a different one.')
+
+
+
 """
 class PostForm(FlaskForm):
     title = StringField('Title', validators=[DataRequired()])
