@@ -3,11 +3,12 @@
   <h4>Welcome...</h4>
   <hr>
   <p><i><u>Your Search result...</u></i></p>
-  <p>{{ pickup }}  ...  {{ Pickupdate }} ... {{ Pickuptime.strftime('%H:%M %p') }}</p>
-  <p>{{ Dropoff }} ...  {{ Dropoffdate }} ... {{ Dropofftime.strftime('%H:%M %p') }}</p>
+  <p>{{ pickup }}  ... {{ dateTo.strftime('%Y-%m-%d, %H:%M %p') }}</p>
+  <p>{{ Dropoff }} ... {{ dateFrom.strftime('%Y-%m-%d, %H:%M %p') }}</p>
   <hr>
   <hr>
-  <p>Cars available for lease around {{ pickup }}</p>
+  <p>Cars available for lease around <i>{{ pickup }}</i></p>
+  <p><small>If no results displayed, cars are already reserved on the day provided</small></p>
   {% for row in results %}
       <article class="media content-section">
         <div class="media-body">

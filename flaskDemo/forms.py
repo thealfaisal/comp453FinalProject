@@ -66,6 +66,10 @@ class SearchForm(FlaskForm):
     Dropofftime = TimeField("Dropoff Time",validators=[Required()])
     submit = SubmitField('Search')
 
+    def validate_Dropoffdate(self, Dropoffdate):
+        if Dropoffdate.data < Pickupdate.data:
+            raise ValidationError('That email is taken. Please choose a different one.')
+
 
 class UpdateAccountForm(FlaskForm):
     username = StringField('Username',

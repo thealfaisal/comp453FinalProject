@@ -36,10 +36,15 @@ def list():
     Pickuptime = form.Pickuptime.data
     Dropoffdate = form.Dropoffdate.data
     Dropofftime = form.Dropofftime.data
+    dateTo = datetime.strptime("{} {}".format(Pickupdate, Pickuptime), "%Y-%m-%d %H:%M:%S")
+    dateFrom = datetime.strptime("{} {}".format(Dropoffdate, Dropofftime), "%Y-%m-%d %H:%M:%S")
     results = Vehicle.query.join(Location,Vehicle.locationID == Location.locationID) \
+    .join(Reservation,Vehicle.vehicleID == Reservation.vehicleID)\
     .filter(Location.locationName == pickup)\
+    .filter(dateFrom > Reservation.dateTo)\
+    .filter(dateTo > Reservation.dateTo)\
     .add_columns(Vehicle.style, Vehicle.BrandName, Vehicle.rate, Vehicle.ModelName,Vehicle.trimLevel)
-    return render_template('list.html', title='Cars List', pickup=pickup, Dropoff=Dropoff,Pickupdate=Pickupdate, Pickuptime=Pickuptime, Dropoffdate=Dropoffdate,Dropofftime=Dropofftime, results=results)
+    return render_template('list.html', title='Cars List', pickup=pickup, Dropoff=Dropoff, dateTo=dateTo, dateFrom=dateFrom, results=results)
 
 
 @app.route("/about")
@@ -52,6 +57,7 @@ def register():
     """
     if current_user.is_authenticated:
         return redirect(url_for('home'))
+        datetime.datetime.strptime("{}, {}".format(date, time), "%m-%d-%Y, %H:%M")
         """
     form = RegistrationForm()
     if form.validate_on_submit():
