@@ -3,8 +3,8 @@
   <h4>Welcome...</h4>
   <hr>
   <p><i><u>Your Search result...</u></i></p>
-  <p>{{ pickup }}  ...  {{ Pickupdate }} ... {{ Pickuptime }}</p>
-  <p>{{ Dropoff }} ...  {{ Dropoffdate }} ... {{ Dropofftime }}</p>
+  <p>{{ pickup }}  ...  {{ Pickupdate }} ... {{ Pickuptime.strftime('%H:%M %p') }}</p>
+  <p>{{ Dropoff }} ...  {{ Dropoffdate }} ... {{ Dropofftime.strftime('%H:%M %p') }}</p>
   <hr>
   <hr>
   <p>Cars available for lease around {{ pickup }}</p>
