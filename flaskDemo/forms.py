@@ -57,8 +57,8 @@ class LoginForm(FlaskForm):
     submit = SubmitField('Login')
 
 class SearchForm(FlaskForm):
-    Pickingup = SelectField("Picking up", choices=myChoices2)
-    Dropoff = SelectField("Dropping off", choices=myChoices2)
+    Pickingup = SelectField("Pick up location", choices=myChoices2)
+    Dropoff = SelectField("Drop off location", choices=myChoices2)
     Pickupdate = DateField("Pickup Date",validators=[Regexp(regex)])
     Pickuptime = StringField('Pickup Time')
     Dropoffdate = DateField("Dropoff Date",validators=[Regexp(regex)])
