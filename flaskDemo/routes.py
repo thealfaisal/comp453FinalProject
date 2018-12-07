@@ -34,12 +34,12 @@ def list():
     Dropoff = form.Dropoff.data
     Pickupdate = form.Pickupdate.data
     Pickuptime = form.Pickuptime.data
-    Dropofftime = form.Dropofftime.data
     Dropoffdate = form.Dropoffdate.data
+    Dropofftime = form.Dropofftime.data
     results = Vehicle.query.join(Location,Vehicle.locationID == Location.locationID) \
     .filter(Location.locationName == pickup)\
     .add_columns(Vehicle.style, Vehicle.BrandName, Vehicle.rate, Vehicle.ModelName,Vehicle.trimLevel)
-    return render_template('list.html', title='Cars List', pickup=pickup, Dropoff=Dropoff,Pickupdate=Pickupdate, Pickuptime=Pickuptime, Dropofftime=Dropofftime, Dropoffdate=Dropoffdate,results=results)
+    return render_template('list.html', title='Cars List', pickup=pickup, Dropoff=Dropoff,Pickupdate=Pickupdate, Pickuptime=Pickuptime, Dropoffdate=Dropoffdate,Dropofftime=Dropofftime, results=results)
 
 
 @app.route("/about")

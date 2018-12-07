@@ -1,12 +1,13 @@
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileAllowed
 from flask_login import current_user
-from wtforms import StringField, PasswordField, SubmitField, BooleanField, TextAreaField, IntegerField, DateField, SelectField, HiddenField,DateTimeField
-from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError,Regexp
+from wtforms import StringField, PasswordField, SubmitField, BooleanField, TextAreaField, IntegerField, DateField, SelectField, HiddenField
+from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError,Regexp,Required
 from wtforms.ext.sqlalchemy.fields import QuerySelectField
 from flaskDemo import db
 from flaskDemo.models import Customer, Location, Reservation, Vehicle
 from wtforms.fields.html5 import DateField
+from wtforms_components import TimeField
 
 locs = Location.query.with_entities(Location.locationID,Location.locationName).distinct()
 # ssns = Department.query.with_entities(Department.mgr_ssn).distinct()
@@ -59,10 +60,10 @@ class LoginForm(FlaskForm):
 class SearchForm(FlaskForm):
     Pickingup = SelectField("Picking up", choices=myChoices2)
     Dropoff = SelectField("Dropping off", choices=myChoices2)
-    Pickupdate = DateField("Pickup Date",validators=[Regexp(regex)])
-    Pickuptime = StringField('Pickup Time')
-    Dropoffdate = DateField("Dropoff Date",validators=[Regexp(regex)])
-    Dropofftime = StringField('Dropoff Time')
+    Pickupdate = DateField("Pickup Date", validators=[Required()])
+    Pickuptime = TimeField("Pickup Time",validators=[Required()])
+    Dropoffdate = DateField("Dropoff Date", validators=[Required()])
+    Dropofftime = TimeField("Dropoff Time",validators=[Required()])
     submit = SubmitField('Search')
 
 
