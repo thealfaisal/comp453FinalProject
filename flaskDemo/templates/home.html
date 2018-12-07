@@ -60,7 +60,7 @@
                             {% endfor %}
                         </div>
                     {% else %}
-                      {{ form.Pickuptime(class="form-control form-control-lg") }}
+                        {{ form.Pickuptime(class="form-control form-control-lg") }}
                     {% endif %}
                   </div>
                 </div>
@@ -83,7 +83,7 @@
                     {{ form.Dropofftime.label(class="form-control-label") }}
 
                     {% if form.Dropofftime.errors %}
-                        {{ form.Dropofftime(class="form-control form-control-lg is-invalid") }}
+                        {{ form.Pickuptime(class="form-control form-control-lg is-invalid") }}
                         <div class="invalid-feedback">
                             {% for error in form.Dropofftime.errors %}
                                 <span>{{ error }}</span>
