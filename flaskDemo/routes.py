@@ -14,6 +14,8 @@ from datetime import datetime
 def home():
     form = SearchForm()
     if form.validate_on_submit():
+        if form.Pickupdate.data < datetime.now():
+            return redirect(url_for('/'))
         return redirect(url_for('list'))
     """
     results = Department.query.all()
