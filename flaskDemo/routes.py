@@ -7,6 +7,8 @@ from flaskDemo.forms import RegistrationForm, LoginForm, SearchForm,UpdateAccoun
 from flaskDemo.models import Customer, Vehicle, Reservation, Location
 from flask_login import login_user, current_user, logout_user, login_required
 from datetime import datetime
+from sqlalchemy import or_
+from sqlalchemy import and_
 
 
 @app.route("/")
@@ -14,7 +16,8 @@ from datetime import datetime
 def home():
     form = SearchForm()
     if form.validate_on_submit():
-        if form.Pickupdate.data < datetime.now():
+        if form.Pickupdate.data <= datetime.now():
+            raise ValidationError('Pickup date should on todays date or later.')
             return redirect(url_for('/'))
         return redirect(url_for('list'))
     """
@@ -42,9 +45,8 @@ def list():
     dateFrom = datetime.strptime("{} {}".format(Dropoffdate, Dropofftime), "%Y-%m-%d %H:%M:%S")
     results = Vehicle.query.join(Location,Vehicle.locationID == Location.locationID) \
     .join(Reservation,Vehicle.vehicleID == Reservation.vehicleID)\
-    .filter(Location.locationName == pickup)\
-    .filter(dateFrom > Reservation.dateTo)\
-    .filter(dateTo > Reservation.dateTo)\
+    .filter(Reservation.pickupLocation == pickup)\
+    .filter(or_(and_(dateTo < Reservation.dateFrom,dateFrom < Reservation.dateFrom),and_(dateTo > Reservation.dateTo,dateFrom > Reservation.dateTo)))\
     .add_columns(Vehicle.style, Vehicle.BrandName, Vehicle.rate, Vehicle.ModelName,Vehicle.trimLevel)
     return render_template('list.html', title='Cars List', pickup=pickup, Dropoff=Dropoff, dateTo=dateTo, dateFrom=dateFrom, results=results)
 

@@ -66,9 +66,9 @@ class SearchForm(FlaskForm):
     Dropofftime = TimeField("Dropoff Time",validators=[Required()])
     submit = SubmitField('Search')
 
-    def validate_Dropoffdate(self, Dropoffdate):
-        if Dropoffdate.data < data.now():
-            raise ValidationError('That email is taken. Please choose a different one.')
+def __init__(self, *args, **kwargs):
+    kwargs['csrf_enabled'] = False
+    super(SearchForm, self).__init__(*args, **kwargs)
 
 
 class UpdateAccountForm(FlaskForm):
@@ -141,6 +141,3 @@ class DeptForm(DeptUpdateForm):
         if dept:
             raise ValidationError('That department number is taken. Please choose a different one.')
 """
-def __init__(self, *args, **kwargs):
-    kwargs['csrf_enabled'] = False
-    super(SearchForm, self).__init__(*args, **kwargs)
