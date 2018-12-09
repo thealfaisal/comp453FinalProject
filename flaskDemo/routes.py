@@ -16,9 +16,6 @@ from sqlalchemy import and_
 def home():
     form = SearchForm()
     if form.validate_on_submit():
-        if form.Pickupdate.data <= datetime.now():
-            raise ValidationError('Pickup date should on todays date or later.')
-            return redirect(url_for('/'))
         return redirect(url_for('list'))
     """
     results = Department.query.all()
@@ -43,6 +40,9 @@ def list():
     Dropofftime = form.Dropofftime.data
     dateTo = datetime.strptime("{} {}".format(Pickupdate, Pickuptime), "%Y-%m-%d %H:%M:%S")
     dateFrom = datetime.strptime("{} {}".format(Dropoffdate, Dropofftime), "%Y-%m-%d %H:%M:%S")
+    if(dateTo < datetime.now()):
+        flash('Pickup date should be today date or later')
+        return redirect(url_for('home'))
     results = Vehicle.query.join(Location,Vehicle.locationID == Location.locationID) \
     .join(Reservation,Vehicle.vehicleID == Reservation.vehicleID)\
     .filter(Reservation.pickupLocation == pickup)\
