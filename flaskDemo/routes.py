@@ -17,38 +17,34 @@ def home():
     form = SearchForm()
     if form.validate_on_submit():
         return redirect(url_for('list'))
-    """
-    results = Department.query.all()
-    return render_template('dept_home.html', outString = results)
-    posts = Post.query.all()
-    return render_template('home.html', posts=posts)
-    results2 = Vehicle.query.join(Location,Vehicle.locationID == Location.locationID,locationName=form.Pickingup.data) \
-               .add_columns(Vehicle.facultyID, Faculty.facultyName, Qualified.Datequalified, Qualified.courseID)
-    results = Faculty.query.join(Qualified,Faculty.facultyID == Qualified.facultyID) \
-              .add_columns(Faculty.facultyID, Faculty.facultyName, Qualified.Datequalified, Qualified.courseID)
-              """
     return render_template('home.html', title='home', form=form)
 
 @app.route("/list", methods=['POST'])
 def list():
     form = SearchForm()
-    pickup = form.Pickingup.data
+    Pickup = form.Pickingup.data
     Dropoff = form.Dropoff.data
     Pickupdate = form.Pickupdate.data
     Pickuptime = form.Pickuptime.data
     Dropoffdate = form.Dropoffdate.data
     Dropofftime = form.Dropofftime.data
     dateTo = datetime.strptime("{} {}".format(Pickupdate, Pickuptime), "%Y-%m-%d %H:%M:%S")
-    dateFrom = datetime.strptime("{} {}".format(Dropoffdate, Dropofftime), "%Y-%m-%d %H:%M:%S")
+    dateFrom = datetime.strptime("{} {}".format(Dropoffdate,Dropofftime), "%Y-%m-%d %H:%M:%S")
     if(dateTo < datetime.now()):
         flash('Pickup date should be today date or later')
         return redirect(url_for('home'))
+    if(dateFrom < datetime.now()):
+        flash('Dropoff date should be today date or later')
+        return redirect(url_for('home'))
+    if(dateFrom <= dateTo):
+        flash('Pickup date should be less than or equal to Dropoff date')
+        return redirect(url_for('home'))
     results = Vehicle.query.join(Location,Vehicle.locationID == Location.locationID) \
     .join(Reservation,Vehicle.vehicleID == Reservation.vehicleID)\
-    .filter(Reservation.pickupLocation == pickup)\
+    .filter(Reservation.pickupLocation == Pickup)\
     .filter(or_(and_(dateTo < Reservation.dateFrom,dateFrom < Reservation.dateFrom),and_(dateTo > Reservation.dateTo,dateFrom > Reservation.dateTo)))\
-    .add_columns(Vehicle.style, Vehicle.BrandName, Vehicle.rate, Vehicle.ModelName,Vehicle.trimLevel)
-    return render_template('list.html', title='Cars List', pickup=pickup, Dropoff=Dropoff, dateTo=dateTo, dateFrom=dateFrom, results=results)
+    .add_columns(Vehicle.style, Vehicle.BrandName, Vehicle.rate, Vehicle.ModelName,Vehicle.trimLevel,Vehicle.vehicleID)
+    return render_template('list.html', title='Cars List', pickup=Pickup, Dropoff=Dropoff, dateTo=dateTo, dateFrom=dateFrom, results=results)
 
 
 @app.route("/about")
@@ -56,8 +52,9 @@ def about():
     return render_template('about.html', title='About')
 
 
-@app.route("/register", methods=['GET', 'POST'])
+@app.route("/register", methods=['GET','POST'])
 def register():
+    #car = Vehicle.query.get_or_404(vid)
     """
     if current_user.is_authenticated:
         return redirect(url_for('home'))

@@ -66,10 +66,11 @@ class SearchForm(FlaskForm):
     Dropofftime = TimeField("Dropoff Time",validators=[Required()])
     submit = SubmitField('Search')
 
+"""
 def __init__(self, *args, **kwargs):
     kwargs['csrf_enabled'] = False
     super(SearchForm, self).__init__(*args, **kwargs)
-
+"""
 
 class UpdateAccountForm(FlaskForm):
     username = StringField('Username',

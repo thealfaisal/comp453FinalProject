@@ -17,9 +17,9 @@
             <p><small class="text-muted"><b>{{ row.style }}</b></small></p>
             <p><small class="text-muted">{{ row.BrandName }}</small></p>
             <p><small class="text-muted">Rate: {{ row.rate }}</small></p>
-            <p><small class="text-muted"><b>{{ row.ModelName }}</b> .. {{ row.trimLevel }}</small></p>
+            <p><small class="text-muted"><b>{{ row.ModelName }}</b> ... {{ row.trimLevel }} ... {{ row.vehicleID }}</small></p>
             <div>
-              <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{{ url_for('register', style=row.style) }}">Reserve</a>
+              <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{{ url_for('register', vid=row.vehicleID) }}">Reserve</a>
             </div>
           </div>
         </div>
