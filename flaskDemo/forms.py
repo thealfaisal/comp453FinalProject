@@ -30,14 +30,17 @@ regex=regex1 + regex2
 
 
 class RegistrationForm(FlaskForm):
-    username = StringField('Username',
+    fullname = StringField('Name*',
+                           validators=[DataRequired(), Length(min=2, max=30)])
+    phonenumber = StringField('Phone Number*', validators=[DataRequired()])
+    username = StringField('Username*',
                            validators=[DataRequired(), Length(min=2, max=20)])
-    email = StringField('Email',
+    email = StringField('Email address*',
                         validators=[DataRequired(), Email()])
-    password = PasswordField('Password', validators=[DataRequired()])
-    confirm_password = PasswordField('Confirm Password',
+    password = PasswordField('Password*', validators=[DataRequired()])
+    confirm_password = PasswordField('Confirm Password*',
                                      validators=[DataRequired(), EqualTo('password')])
-    submit = SubmitField('Sign Up')
+    submit = SubmitField('Reserve Now >')
 
     def validate_username(self, username):
         user = Customer.query.filter_by(username=username.data).first()
@@ -48,14 +51,26 @@ class RegistrationForm(FlaskForm):
         user = Customer.query.filter_by(email=email.data).first()
         if user:
             raise ValidationError('That email is taken. Please choose a different one.')
+"""
+    def validate_phonenumber(form, phonenumber):
+        if len(phonenumber.data) > 16:
+            raise ValidationError('Invalid phone number.')
+        try:
+            input_number = phonenumber.parse(phonenumber.data)
+            if not (phonenumber.is_valid_number(input_number)):
+                raise ValidationError('Invalid phone number.')
+        except:
+            input_number = phonenumber.parse("+1"+phonenumber.data)
+            if not (phonenumber.is_valid_number(input_number)):
+                raise ValidationError('Invalid phone number.')
 
-
+"""
 class LoginForm(FlaskForm):
     email = StringField('Email',
                         validators=[DataRequired(), Email()])
     password = PasswordField('Password', validators=[DataRequired()])
     remember = BooleanField('Remember Me')
-    submit = SubmitField('Login')
+    submit = SubmitField('home')
 
 class SearchForm(FlaskForm):
     Pickingup = SelectField("Picking up", choices=myChoices2)

@@ -43,7 +43,7 @@ def list():
     .join(Reservation,Vehicle.vehicleID == Reservation.vehicleID)\
     .filter(Reservation.pickupLocation == Pickup)\
     .filter(or_(and_(dateTo < Reservation.dateFrom,dateFrom < Reservation.dateFrom),and_(dateTo > Reservation.dateTo,dateFrom > Reservation.dateTo)))\
-    .add_columns(Vehicle.style, Vehicle.BrandName, Vehicle.rate, Vehicle.ModelName,Vehicle.trimLevel,Vehicle.vehicleID)
+    .add_columns(Vehicle.style, Vehicle.BrandName, Vehicle.rate, Vehicle.ModelName,Vehicle.trimLevel,Vehicle.vehicleID, Vehicle.Year, Vehicle.transmission)
     return render_template('list.html', title='Cars List', pickup=Pickup, Dropoff=Dropoff, dateTo=dateTo, dateFrom=dateFrom, results=results)
 
 
@@ -54,7 +54,12 @@ def about():
 
 @app.route("/register", methods=['GET','POST'])
 def register():
-    #car = Vehicle.query.get_or_404(vid)
+    vid = request.args.get('vid')
+    pickup = request.args.get('pickup')
+    dropoff = request.args.get('dropoff')
+    dateFrom = request.args.get('dateFrom')
+    dateTo = request.args.get('dateTo')
+    car = Vehicle.query.get_or_404(vid)
     """
     if current_user.is_authenticated:
         return redirect(url_for('home'))
@@ -63,12 +68,16 @@ def register():
     form = RegistrationForm()
     if form.validate_on_submit():
         hashed_password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
-        customer = Customer(username=form.username.data, email=form.email.data, password=hashed_password)
+        customer = Customer(username=form.username.data, email=form.email.data, password=hashed_password,fullName=form.fullname.data,phoneNumber=form.phonenumber.data)
         db.session.add(customer)
         db.session.commit()
-        flash('Your account has been created! You are now able to log in', 'success')
+        customer = Customer.query.filter_by(email=form.email.data).first()
+        reservation = Reservation(customerID=customer.customerID, vehicleID=vid, dateFrom=dateFrom,dateTo=dateTo,pickupLocation=pickup,dropoffLocation=dropoff)
+        db.session.add(reservation)
+        db.session.commit()
+        flash('Your car has been reserved and account has been created!', 'success')
         return redirect(url_for('login'))
-    return render_template('register.html', title='Register', form=form)
+    return render_template('register.html', title='Register', form=form, car=car, dateTo=dateTo, dateFrom=dateFrom)
 
 
 @app.route("/login", methods=['GET', 'POST'])
