@@ -9,6 +9,7 @@ from flask_login import login_user, current_user, logout_user, login_required
 from datetime import datetime
 from sqlalchemy import or_
 from sqlalchemy import and_
+from decimal import *
 
 
 @app.route("/")
@@ -51,6 +52,14 @@ def list():
 def about():
     return render_template('about.html', title='About')
 
+@app.route("/admin")
+@login_required
+def admin():
+    if current_user.is_authenticated and (current_user.admin != True):
+        return redirect(url_for('home'))
+    return render_template('admin.html', title='Adminstrator')
+
+
 
 @app.route("/register", methods=['GET','POST'])
 def register():
@@ -59,7 +68,13 @@ def register():
     dropoff = request.args.get('dropoff')
     dateFrom = request.args.get('dateFrom')
     dateTo = request.args.get('dateTo')
+    dateT = datetime.strptime("{}".format(dateTo), "%Y-%m-%d %H:%M:%S")
+    dateF = datetime.strptime("{}".format(dateFrom), "%Y-%m-%d %H:%M:%S")
+    diff = abs((dateF - dateT).days)
     car = Vehicle.query.get_or_404(vid)
+    amount = diff * car.rate
+    tax = Decimal(amount) * Decimal(0.1)
+    total = amount + tax
     """
     if current_user.is_authenticated:
         return redirect(url_for('home'))
@@ -76,8 +91,8 @@ def register():
         db.session.add(reservation)
         db.session.commit()
         flash('Your car has been reserved and account has been created!', 'success')
-        return redirect(url_for('login'))
-    return render_template('register.html', title='Register', form=form, car=car, dateTo=dateTo, dateFrom=dateFrom)
+        return redirect(url_for('home'))
+    return render_template('register.html', title='Register', form=form, car=car, dateTo=dateTo, dateFrom=dateFrom, diff=diff, amount=amount, tax=tax, total=total)
 
 
 @app.route("/login", methods=['GET', 'POST'])
@@ -87,7 +102,11 @@ def login():
     form = LoginForm()
     if form.validate_on_submit():
         customer = Customer.query.filter_by(email=form.email.data).first()
-        if customer and bcrypt.check_password_hash(customer.password, form.password.data):
+        if customer.admin and bcrypt.check_password_hash(customer.password, form.password.data):
+            login_user(customer, remember=form.remember.data)
+            next_page = request.args.get('next')
+            return redirect(next_page) if next_page else redirect(url_for('admin'))
+        elif customer and bcrypt.check_password_hash(customer.password, form.password.data):
             login_user(customer, remember=form.remember.data)
             next_page = request.args.get('next')
             return redirect(next_page) if next_page else redirect(url_for('home'))

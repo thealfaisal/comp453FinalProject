@@ -70,7 +70,7 @@ class LoginForm(FlaskForm):
                         validators=[DataRequired(), Email()])
     password = PasswordField('Password', validators=[DataRequired()])
     remember = BooleanField('Remember Me')
-    submit = SubmitField('home')
+    submit = SubmitField('Login')
 
 class SearchForm(FlaskForm):
     Pickingup = SelectField("Picking up", choices=myChoices2)

@@ -1,15 +1,20 @@
 {% extends "layout.html" %}
 {% block content %}
     <div class="content-section">
-      <h3>Reserve</h3>
+      <h3>Review and Reserve</h3>
       <p>Reserve now and pay later</p>
+      <div class="content-section"><small>
+        <h6>Your amount due</h6>
+        <p>Amount: {{ diff }} days * ${{ car.rate|round }} = ${{ amount|round }}</p>
+        <p>Tax: ${{ tax|round }}</p>
+        <p>Total with tax: ${{ total|round }}</p></small>
+      </div>
     </div>
     <div class="content-section">
         <form method="POST" action="">
             {{ form.hidden_tag() }}
             <fieldset class="form-group">
                 <legend class="border-bottom mb-4">Who's Driving?</legend>
-                <hr>
                 <div class="content-section">
                   <div class="form-group">
                       {{ form.fullname.label(class="form-control-label") }}
@@ -109,7 +114,7 @@
             <h5>Your car Information</h5>
             <hr>
             <p>{{ car.style }}  ...  {{ dateTo }} - {{ dateFrom }}</p>
-            <ul style="overflow: scroll; height: 15em;"><small>
+            <ul style="overflow: scroll; height: 10em;"><small>
               <li>The following rules and restrictions are provided by the car rental company.</li>
               <li>The driver must present a valid driver's license (Opens in a new window.) and credit card in their name upon pick-up. The credit card is required as a deposit when renting any vehicle. The deposit amount is held by the car rental company. Please ensure sufficient funds are available on the card.</li>
               <li>International rentals may have different driver license requirements. An international driving license is required if the drivers' license is non-roman alphabet.</li>
