@@ -15,13 +15,13 @@ locs = Location.query.with_entities(Location.locationID,Location.locationName).d
 # for that way, we would have imported db from flaskDemo, see above
 
 myChoices2 = [(row[1],row[1]) for row in locs]  # change
-"""
-results=list()
-for row in ssns:
-    rowDict=row._asdict()
-    results.append(rowDict)
-myChoices = [(row['mgr_ssn'],row['mgr_ssn']) for row in results]
-"""
+# """
+# results=list()
+# for row in ssns:
+#     rowDict=row._asdict()
+#     results.append(rowDict)
+# myChoices = [(row['mgr_ssn'],row['mgr_ssn']) for row in results]
+# """
 regex1='^((((19|20)(([02468][048])|([13579][26]))-02-29))|((20[0-9][0-9])|(19[0-9][0-9]))-((((0[1-9])'
 regex2='|(1[0-2]))-((0[1-9])|(1\d)|(2[0-8])))|((((0[13578])|(1[02]))-31)|(((0[1,3-9])|(1[0-2]))-(29|30)))))$'
 regex=regex1 + regex2
@@ -51,20 +51,20 @@ class RegistrationForm(FlaskForm):
         user = Customer.query.filter_by(email=email.data).first()
         if user:
             raise ValidationError('That email is taken. Please choose a different one.')
-"""
-    def validate_phonenumber(form, phonenumber):
-        if len(phonenumber.data) > 16:
-            raise ValidationError('Invalid phone number.')
-        try:
-            input_number = phonenumber.parse(phonenumber.data)
-            if not (phonenumber.is_valid_number(input_number)):
-                raise ValidationError('Invalid phone number.')
-        except:
-            input_number = phonenumber.parse("+1"+phonenumber.data)
-            if not (phonenumber.is_valid_number(input_number)):
-                raise ValidationError('Invalid phone number.')
-
-"""
+# """
+#     def validate_phonenumber(form, phonenumber):
+#         if len(phonenumber.data) > 16:
+#             raise ValidationError('Invalid phone number.')
+#         try:
+#             input_number = phonenumber.parse(phonenumber.data)
+#             if not (phonenumber.is_valid_number(input_number)):
+#                 raise ValidationError('Invalid phone number.')
+#         except:
+#             input_number = phonenumber.parse("+1"+phonenumber.data)
+#             if not (phonenumber.is_valid_number(input_number)):
+#                 raise ValidationError('Invalid phone number.')
+#
+# """
 class LoginForm(FlaskForm):
     email = StringField('Email',
                         validators=[DataRequired(), Email()])
@@ -111,49 +111,52 @@ class UpdateAccountForm(FlaskForm):
 
 
 
-"""
-class PostForm(FlaskForm):
-    title = StringField('Title', validators=[DataRequired()])
-    content = TextAreaField('Content', validators=[DataRequired()])
-    submit = SubmitField('Post')
 
 
-class DeptUpdateForm(FlaskForm):
-
-#    dnumber=IntegerField('Department Number', validators=[DataRequired()])
-    dnumber = HiddenField("")
-
-    dname=StringField('Department Name:', validators=[DataRequired(),Length(max=15)])
-#  Commented out using a text field, validated with a Regexp.  That also works, but a hassle to enter ssn.
-#    mgr_ssn = StringField("Manager's SSN", validators=[DataRequired(),Regexp('^(?!000|666)[0-8][0-9]{2}(?!00)[0-9]{2}(?!0000)[0-9]{4}$', message="Please enter 9 digits for a social security.")])
-
-#  One of many ways to use SelectField or QuerySelectField.  Lots of issues using those fields!!
-    mgr_ssn = SelectField("Manager's SSN", choices=myChoices)  # myChoices defined at top
-
-# the regexp works, and even gives an error message
-#    mgr_start=DateField("Manager's Start Date:  yyyy-mm-dd",validators=[Regexp(regex)])
-#    mgr_start = DateField("Manager's Start Date")
-
-#    mgr_start=DateField("Manager's Start Date", format='%Y-%m-%d')
-    mgr_start = DateField("Manager's start date:", format='%Y-%m-%d')  # This is using the html5 date picker (imported)
-    submit = SubmitField('Update this department')
-
-
-# got rid of def validate_dnumber
-
-    def validate_dname(self, dname):    # apparently in the company DB, dname is specified as unique
-         dept = Department.query.filter_by(dname=dname.data).first()
-         if dept and (str(dept.dnumber) != str(self.dnumber.data)):
-             raise ValidationError('That department name is already being used. Please choose a different name.')
-
-
-class DeptForm(DeptUpdateForm):
-
-    dnumber=IntegerField('Department Number', validators=[DataRequired()])
-    submit = SubmitField('Add this department')
-
-    def validate_dnumber(self, dnumber):    #because dnumber is primary key and should be unique
-        dept = Department.query.filter_by(dnumber=dnumber.data).first()
-        if dept:
-            raise ValidationError('That department number is taken. Please choose a different one.')
-"""
+#
+# """
+# class PostForm(FlaskForm):
+#     title = StringField('Title', validators=[DataRequired()])
+#     content = TextAreaField('Content', validators=[DataRequired()])
+#     submit = SubmitField('Post')
+#
+#
+# class DeptUpdateForm(FlaskForm):
+#
+# #    dnumber=IntegerField('Department Number', validators=[DataRequired()])
+#     dnumber = HiddenField("")
+#
+#     dname=StringField('Department Name:', validators=[DataRequired(),Length(max=15)])
+# #  Commented out using a text field, validated with a Regexp.  That also works, but a hassle to enter ssn.
+# #    mgr_ssn = StringField("Manager's SSN", validators=[DataRequired(),Regexp('^(?!000|666)[0-8][0-9]{2}(?!00)[0-9]{2}(?!0000)[0-9]{4}$', message="Please enter 9 digits for a social security.")])
+#
+# #  One of many ways to use SelectField or QuerySelectField.  Lots of issues using those fields!!
+#     mgr_ssn = SelectField("Manager's SSN", choices=myChoices)  # myChoices defined at top
+#
+# # the regexp works, and even gives an error message
+# #    mgr_start=DateField("Manager's Start Date:  yyyy-mm-dd",validators=[Regexp(regex)])
+# #    mgr_start = DateField("Manager's Start Date")
+#
+# #    mgr_start=DateField("Manager's Start Date", format='%Y-%m-%d')
+#     mgr_start = DateField("Manager's start date:", format='%Y-%m-%d')  # This is using the html5 date picker (imported)
+#     submit = SubmitField('Update this department')
+#
+#
+# # got rid of def validate_dnumber
+#
+#     def validate_dname(self, dname):    # apparently in the company DB, dname is specified as unique
+#          dept = Department.query.filter_by(dname=dname.data).first()
+#          if dept and (str(dept.dnumber) != str(self.dnumber.data)):
+#              raise ValidationError('That department name is already being used. Please choose a different name.')
+#
+#
+# class DeptForm(DeptUpdateForm):
+#
+#     dnumber=IntegerField('Department Number', validators=[DataRequired()])
+#     submit = SubmitField('Add this department')
+#
+#     def validate_dnumber(self, dnumber):    #because dnumber is primary key and should be unique
+#         dept = Department.query.filter_by(dnumber=dnumber.data).first()
+#         if dept:
+#             raise ValidationError('That department number is taken. Please choose a different one.')
+# """

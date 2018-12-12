@@ -32,13 +32,13 @@ def list():
     dateTo = datetime.strptime("{} {}".format(Pickupdate, Pickuptime), "%Y-%m-%d %H:%M:%S")
     dateFrom = datetime.strptime("{} {}".format(Dropoffdate,Dropofftime), "%Y-%m-%d %H:%M:%S")
     if(dateTo < datetime.now()):
-        flash('Pickup date should be today date or later')
+        flash('The Pickup date can not be in the past. Please check the Pickup date', 'danger')
         return redirect(url_for('home'))
     if(dateFrom < datetime.now()):
-        flash('Dropoff date should be today date or later')
+        flash('The Dropoff date can not be in the past. Please check the Dropoff date', 'danger')
         return redirect(url_for('home'))
     if(dateFrom <= dateTo):
-        flash('Pickup date should be less than or equal to Dropoff date')
+        flash('The Dropoff date can not be before the Pickup date. Please check the Dropoff date', 'danger')
         return redirect(url_for('home'))
     results = Vehicle.query.join(Location,Vehicle.locationID == Location.locationID) \
     .join(Reservation,Vehicle.vehicleID == Reservation.vehicleID)\
@@ -58,6 +58,9 @@ def admin():
     if current_user.is_authenticated and (current_user.admin != True):
         return redirect(url_for('home'))
     return render_template('admin.html', title='Adminstrator')
+
+
+
 
 
 
@@ -176,6 +179,9 @@ def new_dept():
         return redirect(url_for('home'))
     return render_template('create_dept.html', title='New Department',
                            form=form, legend='New Department')
+
+
+
 
 """
 @app.route("/dept/<dnumber>")

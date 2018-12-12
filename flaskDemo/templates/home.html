@@ -26,7 +26,7 @@
                           {{ form.Dropoff(class="form-control form-control-lg is-invalid") }}
                           <div class="invalid-feedback">
                               {% for error in form.Dropoff.errors %}
-                                  <span>{{ error }}</span>
+                                  <span class="">{{ error }}</span>
                               {% endfor %}
                           </div>
                       {% else %}
@@ -39,10 +39,10 @@
                     {{ form.Pickupdate.label(class="form-control-label") }}
 
                     {% if form.Pickupdate.errors %}
-                        {{ form.Pickupdate(class="form-control form-control-lg is-invalid") }}
-                        <div class="invalid-feedback alert alert-danger" role="alert" >
+                        {{ form.Pickupdate(class="form-control form-control-lg is-invalid alert alert-danger") }}
+                        <div>
                             {% for error in form.Pickupdate.errors %}
-                                <span>{{ error }}</span>
+                                <span>{{ error(class="") }}</span>
                             {% endfor %}
                         </div>
                     {% else %}
@@ -72,7 +72,7 @@
                         {{ form.Dropoffdate(class="form-control form-control-lg is-invalid") }}
                         <div class="invalid-feedback">
                             {% for error in form.Dropoffdate.errors %}
-                                <span>{{ error }}</span>
+                                <span>{{ error(class="alert alert-danger") }}</span>
                             {% endfor %}
                         </div>
                     {% else %}
