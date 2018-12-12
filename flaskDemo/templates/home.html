@@ -1,7 +1,7 @@
 {% extends "layout.html" %}
 {% block content %}
     <div class="content-section">
-        <form method="post" action="/list">
+        <form method="post" action="{{(url_for('list'))}}">
             <fieldset class="form-group">
                 <legend class="border-bottom mb-4">Looking for Car?</legend>
                 <div class="row">

@@ -32,6 +32,8 @@
             <!-- Navbar Right Side -->
             <div class="navbar-nav">
               {% if current_user.is_authenticated and (current_user.admin == True)%}
+                <a class="nav-item nav-link" href="{{ url_for('new_loc') }}">New_Location</a>
+                <a class="nav-item nav-link" href="{{ url_for('new_vehicle') }}">New_Vehicle</a>
                 <a class="nav-item nav-link" href="{{ url_for('admin') }}">Adminstrator</a>
               {% endif %}
               {% if current_user.is_authenticated %}
@@ -62,7 +64,7 @@
           {% endwith %}
           {% block content %}{% endblock %}
         </div>
-        {% if current_user.is_authenticated %}
+        {% if current_user.is_authenticated and (current_user.admin != True)%}
         <div class="col-sm-4">
           <div class="content-section">
             <h3>My Dashboard</h3>
@@ -73,6 +75,17 @@
                 <li class="list-group-item list-group-item-light">Calendars</li>
                 <li class="list-group-item list-group-item-light">Partners</li>
               </ul>
+            <br>
+          </div>
+        </div>{% endif %}
+        {% if current_user.is_authenticated and (current_user.admin == True)%}
+        <div class="col-sm-4">
+          <div class="content-section">
+            <h3>Admin Feeds</h3>
+            <br>
+            <!-- Add Vehicle and Location route -->
+            <p><a href="{{ url_for('admin') }}">News</a></p>
+            <p><a href="{{ url_for('admin') }}">Lease Aggrement</a></p>
             <br>
           </div>
         </div>{% endif %}

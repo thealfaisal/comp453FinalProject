@@ -3,17 +3,18 @@ import secrets
 from PIL import Image
 from flask import render_template, url_for, flash, redirect, request, abort
 from flaskDemo import app, db, bcrypt
-from flaskDemo.forms import RegistrationForm, LoginForm, SearchForm,UpdateAccountForm
-from flaskDemo.models import Customer, Vehicle, Reservation, Location
+from flaskDemo.forms import RegistrationForm, LoginForm, SearchForm,UpdateAccountForm, VehicleForm, LocationForm
+from flaskDemo.models import Customer, Vehicle, Reservation, Location, Brand, Trim, Style, Model
 from flask_login import login_user, current_user, logout_user, login_required
 from datetime import datetime
 from sqlalchemy import or_
 from sqlalchemy import and_
 from decimal import *
+from flask import Markup
 
 
 @app.route("/")
-@app.route("/home", methods=['GET'])
+@app.route("/home", methods=['GET','POST'])
 def home():
     form = SearchForm()
     if form.validate_on_submit():
@@ -32,6 +33,7 @@ def list():
     dateTo = datetime.strptime("{} {}".format(Pickupdate, Pickuptime), "%Y-%m-%d %H:%M:%S")
     dateFrom = datetime.strptime("{} {}".format(Dropoffdate,Dropofftime), "%Y-%m-%d %H:%M:%S")
     if(dateTo < datetime.now()):
+<<<<<<< HEAD
         flash('The Pickup date can not be in the past. Please check the Pickup date', 'danger')
         return redirect(url_for('home'))
     if(dateFrom < datetime.now()):
@@ -39,6 +41,15 @@ def list():
         return redirect(url_for('home'))
     if(dateFrom <= dateTo):
         flash('The Dropoff date can not be before the Pickup date. Please check the Dropoff date', 'danger')
+=======
+        flash('Pickup date should be today date or later', 'danger')
+        return redirect(url_for('home'))
+    if(dateFrom < datetime.now()):
+        flash('Dropoff date should be today date or later', 'danger')
+        return redirect(url_for('home'))
+    if(dateFrom <= dateTo):
+        flash('Pickup date should be less than or equal to Dropoff date', 'danger')
+>>>>>>> fd93a3ad47f48f0632d5793d67a7e5844f91f522
         return redirect(url_for('home'))
     results = Vehicle.query.join(Location,Vehicle.locationID == Location.locationID) \
     .join(Reservation,Vehicle.vehicleID == Reservation.vehicleID)\
@@ -52,13 +63,30 @@ def list():
 def about():
     return render_template('about.html', title='About')
 
-@app.route("/admin")
+@app.route("/admin", methods=['GET', 'POST'])
 @login_required
 def admin():
     if current_user.is_authenticated and (current_user.admin != True):
         return redirect(url_for('home'))
-    return render_template('admin.html', title='Adminstrator')
-
+    import mysql.connector
+    from mysql.connector import Error
+    ''' Connect to MySQL database '''
+    try:
+        conn = mysql.connector.connect(host='45.55.59.121',
+                                           database='ASF',
+                                           user='ASF',
+                                           password='ASFASFASF')
+        if conn.is_connected():
+            cursor = conn.cursor()
+        else:
+            flash('problem')
+        cursor.execute("SELECT reservation.pickupLocation, COUNT(reservation.pickupLocation) AS ReservedLocationFrequency FROM reservation GROUP BY reservation.pickupLocation")
+        row = cursor.fetchall()
+    except Error as e:
+        print(e)
+    finally:
+        conn.close()
+    return render_template('admin.html', title='Adminstrator', row=row)
 
 
 
@@ -166,6 +194,22 @@ def account():
     return render_template('account.html', title='Account',
                            image_file=image_file, form=form)
 
+@app.route("/vechicle/new", methods=['GET','POST'])
+@login_required
+def new_vehicle():
+    if current_user.is_authenticated and (current_user.admin != True):
+        return redirect(url_for('home'))
+    form = VehicleForm()
+    if form.validate_on_submit():
+        loc = Location.query.get_or_404(form.locationName.data)
+        veh = Vehicle(BrandName=form.BrandName.data, plateNumber=form.PlateNumber.data,ModelName=form.Model.data,Year=form.Year.data,style=form.Style.data,Transmission=form.transmission.data,TrimLevel=form.trimLevel.data,rate=form.Rate.data,locationID=loc.locationID)
+        db.session.add(veh)
+        db.session.commit()
+        flash('You have added a new vehicle!', 'success')
+        return redirect(url_for('admin'))
+    return render_template('create_vehicle.html', title='New Vehicle',
+                           form=form, legend='New Vehicle')
+
 
 @app.route("/dept/new", methods=['GET', 'POST'])
 @login_required
@@ -180,8 +224,23 @@ def new_dept():
     return render_template('create_dept.html', title='New Department',
                            form=form, legend='New Department')
 
+<<<<<<< HEAD
 
 
+=======
+@app.route("/loc/new", methods=['GET', 'POST'])
+@login_required
+def new_loc():
+    form = LocationForm()
+    if form.validate_on_submit():
+        loc = Location(locationName=form.LocationName.data, city=form.City.data,state=form.State.data,zipcode=form.Zipcode.data)
+        db.session.add(loc)
+        db.session.commit()
+        flash('You have added a new location!', 'success')
+        return redirect(url_for('home'))
+    return render_template('create_loc.html', title='New Location',
+                           form=form, legend='New Location')
+>>>>>>> fd93a3ad47f48f0632d5793d67a7e5844f91f522
 
 """
 @app.route("/dept/<dnumber>")
