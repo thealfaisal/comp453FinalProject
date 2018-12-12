@@ -40,7 +40,7 @@
 
                     {% if form.Pickupdate.errors %}
                         {{ form.Pickupdate(class="form-control form-control-lg is-invalid") }}
-                        <div class="invalid-feedback">
+                        <div class="invalid-feedback alert alert-danger" role="alert" >
                             {% for error in form.Pickupdate.errors %}
                                 <span>{{ error }}</span>
                             {% endfor %}
