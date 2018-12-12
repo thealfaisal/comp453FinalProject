@@ -10,10 +10,11 @@ from datetime import datetime
 from sqlalchemy import or_
 from sqlalchemy import and_
 from decimal import *
+from flask import Markup
 
 
 @app.route("/")
-@app.route("/home", methods=['GET'])
+@app.route("/home", methods=['GET','POST'])
 def home():
     form = SearchForm()
     if form.validate_on_submit():
@@ -52,13 +53,30 @@ def list():
 def about():
     return render_template('about.html', title='About')
 
-@app.route("/admin")
+@app.route("/admin", methods=['GET', 'POST'])
 @login_required
 def admin():
     if current_user.is_authenticated and (current_user.admin != True):
         return redirect(url_for('home'))
-    return render_template('admin.html', title='Adminstrator')
-
+    import mysql.connector
+    from mysql.connector import Error
+    ''' Connect to MySQL database '''
+    try:
+        conn = mysql.connector.connect(host='45.55.59.121',
+                                           database='ASF',
+                                           user='ASF',
+                                           password='ASFASFASF')
+        if conn.is_connected():
+            cursor = conn.cursor()
+        else:
+            flash('problem')
+        cursor.execute("SELECT reservation.pickupLocation, COUNT(reservation.pickupLocation) AS ReservedLocationFrequency FROM reservation GROUP BY reservation.pickupLocation")
+        row = cursor.fetchall()
+    except Error as e:
+        print(e)
+    finally:
+        conn.close()
+    return render_template('admin.html', title='Adminstrator', row=row)
 
 
 @app.route("/register", methods=['GET','POST'])

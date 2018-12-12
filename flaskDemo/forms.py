@@ -1,7 +1,7 @@
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileAllowed
 from flask_login import current_user
-from wtforms import StringField, PasswordField, SubmitField, BooleanField, TextAreaField, IntegerField, DateField, SelectField, HiddenField
+from wtforms import StringField, PasswordField, SubmitField, BooleanField, TextAreaField, IntegerField, DateField, SelectField, HiddenField,validators
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError,Regexp,Required
 from wtforms.ext.sqlalchemy.fields import QuerySelectField
 from flaskDemo import db

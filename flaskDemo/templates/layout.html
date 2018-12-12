@@ -63,7 +63,7 @@
           {% endwith %}
           {% block content %}{% endblock %}
         </div>
-        {% if current_user.is_authenticated %}
+        {% if current_user.is_authenticated and (current_user.admin != True)%}
         <div class="col-sm-4">
           <div class="content-section">
             <h3>My Dashboard</h3>
@@ -74,6 +74,17 @@
                 <li class="list-group-item list-group-item-light">Calendars</li>
                 <li class="list-group-item list-group-item-light">Partners</li>
               </ul>
+            <br>
+          </div>
+        </div>{% endif %}
+        {% if current_user.is_authenticated and (current_user.admin == True)%}
+        <div class="col-sm-4">
+          <div class="content-section">
+            <h3>Admin Links</h3>
+            <br>
+            <!-- Add Vehicle and Location route -->
+            <p><a href="{{ url_for('admin') }}">Add Vehicle</a></p>
+            <p><a href="{{ url_for('admin') }}">Add Location</a></p>
             <br>
           </div>
         </div>{% endif %}
