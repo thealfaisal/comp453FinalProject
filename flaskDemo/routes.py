@@ -11,6 +11,7 @@ from sqlalchemy import or_
 from sqlalchemy import and_
 from decimal import *
 from flask import Markup
+from flask_mail import Mail, Message
 
 @app.route("/")
 def entry():
@@ -43,11 +44,17 @@ def list():
     if(dateTo < dateFrom):
         flash('The Dropoff date can not be before the Pickup date. Please check the Dropoff date', 'danger')
         return redirect(url_for('home'))
-    results = Vehicle.query.join(Location,Vehicle.locationID == Location.locationID) \
-    .join(Reservation,Vehicle.vehicleID == Reservation.vehicleID)\
-    .filter(Reservation.pickupLocation == Pickup)\
-    .filter(or_(and_(dateFrom < Reservation.dateFrom,dateTo < Reservation.dateFrom),and_(dateFrom > Reservation.dateTo,dateTo > Reservation.dateTo)))\
-    .add_columns(Vehicle.style, Vehicle.BrandName, Vehicle.rate, Vehicle.ModelName,Vehicle.trimLevel,Vehicle.vehicleID, Vehicle.Year, Vehicle.transmission)
+    results=""
+    resrv = Reservation.query.filter_by(pickupLocation=Pickup).first()
+    if resrv is None:
+        loc = Location.query.filter_by(locationName=Pickup).first()
+        results = Vehicle.query.filter(Vehicle.locationID==loc.locationID)
+    elif resrv:
+        results = Vehicle.query.join(Location,Vehicle.locationID == Location.locationID) \
+        .join(Reservation,Vehicle.vehicleID == Reservation.vehicleID)\
+        .filter(Reservation.pickupLocation == Pickup)\
+        .filter(or_(and_(dateFrom < Reservation.dateFrom,dateTo < Reservation.dateFrom),and_(dateFrom > Reservation.dateTo,dateTo > Reservation.dateTo)))\
+        .add_columns(Vehicle.style, Vehicle.BrandName, Vehicle.rate, Vehicle.ModelName,Vehicle.trimLevel,Vehicle.vehicleID, Vehicle.Year, Vehicle.transmission)
     return render_template('list.html', title='Cars List', pickup=Pickup, Dropoff=Dropoff, dateTo=dateTo, dateFrom=dateFrom, results=results)
 
 
@@ -133,6 +140,9 @@ def register():
         reservation = Reservation(customerID=customer.customerID, vehicleID=vid, dateFrom=dateFrom,dateTo=dateTo,pickupLocation=pickup,dropoffLocation=dropoff)
         db.session.add(reservation)
         db.session.commit()
+        msg = Message("Feedback", recipients=[app.config['MAIL_USERNAME']])
+        msg.body = "You have received a new feedback from {} <{}>.".format(customer.fullName, customer.email)
+        mail.send(msg)
         flash('Your car has been reserved and account has been created!', 'success')
         return redirect(url_for('home'))
     return render_template('register.html', title='Register', form=form, car=car, dateTo=dateTo, dateFrom=dateFrom, diff=diff, amount=amount, tax=tax, total=total)
