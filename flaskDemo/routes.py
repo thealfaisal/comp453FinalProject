@@ -12,8 +12,10 @@ from sqlalchemy import and_
 from decimal import *
 from flask import Markup
 
-
 @app.route("/")
+def entry():
+    return render_template('entry.html', title='entry')
+
 @app.route("/home", methods=['GET','POST'])
 def home():
     form = SearchForm()
@@ -33,7 +35,7 @@ def list():
     dateTo = datetime.strptime("{} {}".format(Pickupdate, Pickuptime), "%Y-%m-%d %H:%M:%S")
     dateFrom = datetime.strptime("{} {}".format(Dropoffdate,Dropofftime), "%Y-%m-%d %H:%M:%S")
     if(dateTo < datetime.now()):
-<<<<<<< HEAD
+
         flash('The Pickup date can not be in the past. Please check the Pickup date', 'danger')
         return redirect(url_for('home'))
     if(dateFrom < datetime.now()):
@@ -41,7 +43,6 @@ def list():
         return redirect(url_for('home'))
     if(dateFrom <= dateTo):
         flash('The Dropoff date can not be before the Pickup date. Please check the Dropoff date', 'danger')
-=======
         flash('Pickup date should be today date or later', 'danger')
         return redirect(url_for('home'))
     if(dateFrom < datetime.now()):
@@ -49,7 +50,7 @@ def list():
         return redirect(url_for('home'))
     if(dateFrom <= dateTo):
         flash('Pickup date should be less than or equal to Dropoff date', 'danger')
->>>>>>> fd93a3ad47f48f0632d5793d67a7e5844f91f522
+
         return redirect(url_for('home'))
     results = Vehicle.query.join(Location,Vehicle.locationID == Location.locationID) \
     .join(Reservation,Vehicle.vehicleID == Reservation.vehicleID)\
@@ -224,10 +225,10 @@ def new_dept():
     return render_template('create_dept.html', title='New Department',
                            form=form, legend='New Department')
 
-<<<<<<< HEAD
 
 
-=======
+
+
 @app.route("/loc/new", methods=['GET', 'POST'])
 @login_required
 def new_loc():
@@ -240,7 +241,7 @@ def new_loc():
         return redirect(url_for('home'))
     return render_template('create_loc.html', title='New Location',
                            form=form, legend='New Location')
->>>>>>> fd93a3ad47f48f0632d5793d67a7e5844f91f522
+
 
 """
 @app.route("/dept/<dnumber>")

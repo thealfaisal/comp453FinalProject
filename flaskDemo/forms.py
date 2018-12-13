@@ -20,7 +20,7 @@ models = Model.query.with_entities(Model.ModelName).distinct()
 transm = [(0,"Manual"),(1,"Automatic")]
 
 myChoices2 = [(row[1],row[1]) for row in locs]  # change
-<<<<<<< HEAD
+
 # """
 # results=list()
 # for row in ssns:
@@ -28,7 +28,7 @@ myChoices2 = [(row[1],row[1]) for row in locs]  # change
 #     results.append(rowDict)
 # myChoices = [(row['mgr_ssn'],row['mgr_ssn']) for row in results]
 # """
-=======
+
 styleChoices = [(row[0],row[0]) for row in styles]  # change
 trimChoices = [(row[0],row[0]) for row in trims]  # change
 brandChoices = [(row[0],row[0]) for row in brands]  # change
@@ -41,7 +41,7 @@ for row in ssns:
     results.append(rowDict)
 myChoices = [(row['mgr_ssn'],row['mgr_ssn']) for row in results]
 """
->>>>>>> fd93a3ad47f48f0632d5793d67a7e5844f91f522
+
 regex1='^((((19|20)(([02468][048])|([13579][26]))-02-29))|((20[0-9][0-9])|(19[0-9][0-9]))-((((0[1-9])'
 regex2='|(1[0-2]))-((0[1-9])|(1\d)|(2[0-8])))|((((0[13578])|(1[02]))-31)|(((0[1,3-9])|(1[0-2]))-(29|30)))))$'
 regex=regex1 + regex2
