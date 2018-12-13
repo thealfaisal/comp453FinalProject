@@ -20,18 +20,6 @@ models = Model.query.with_entities(Model.ModelName).distinct()
 transm = [(0,"Manual"),(1,"Automatic")]
 
 myChoices2 = [(row[1],row[1]) for row in locs]  # change
-<<<<<<< HEAD
-
-# """
-# results=list()
-# for row in ssns:
-#     rowDict=row._asdict()
-#     results.append(rowDict)
-# myChoices = [(row['mgr_ssn'],row['mgr_ssn']) for row in results]
-# """
-
-=======
->>>>>>> 1616260c37064c591344980edc1fc85d9d45029a
 styleChoices = [(row[0],row[0]) for row in styles]  # change
 trimChoices = [(row[0],row[0]) for row in trims]  # change
 brandChoices = [(row[0],row[0]) for row in brands]  # change

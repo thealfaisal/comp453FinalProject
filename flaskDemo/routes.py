@@ -32,16 +32,10 @@ def list():
     Pickuptime = form.Pickuptime.data
     Dropoffdate = form.Dropoffdate.data
     Dropofftime = form.Dropofftime.data
-<<<<<<< HEAD
-    dateTo = datetime.strptime("{} {}".format(Pickupdate, Pickuptime), "%Y-%m-%d %H:%M:%S")
-    dateFrom = datetime.strptime("{} {}".format(Dropoffdate,Dropofftime), "%Y-%m-%d %H:%M:%S")
-    if(dateTo < datetime.now()):
-=======
     dateFrom = datetime.strptime("{} {}".format(Pickupdate, Pickuptime), "%Y-%m-%d %H:%M:%S")
     dateTo = datetime.strptime("{} {}".format(Dropoffdate,Dropofftime), "%Y-%m-%d %H:%M:%S")
     if(dateFrom < datetime.now()):
 
->>>>>>> 1616260c37064c591344980edc1fc85d9d45029a
         flash('The Pickup date can not be in the past. Please check the Pickup date', 'danger')
         return redirect(url_for('home'))
     if(dateTo < datetime.now()):
@@ -49,16 +43,6 @@ def list():
         return redirect(url_for('home'))
     if(dateTo < dateFrom):
         flash('The Dropoff date can not be before the Pickup date. Please check the Dropoff date', 'danger')
-<<<<<<< HEAD
-        flash('Pickup date should be today date or later', 'danger')
-        return redirect(url_for('home'))
-    if(dateFrom < datetime.now()):
-        flash('Dropoff date should be today date or later', 'danger')
-        return redirect(url_for('home'))
-    if(dateFrom <= dateTo):
-        flash('Pickup date should be less than or equal to Dropoff date', 'danger')
-=======
->>>>>>> 1616260c37064c591344980edc1fc85d9d45029a
         return redirect(url_for('home'))
     results = Vehicle.query.join(Location,Vehicle.locationID == Location.locationID) \
     .join(Reservation,Vehicle.vehicleID == Reservation.vehicleID)\
@@ -257,10 +241,6 @@ def new_dept():
     return render_template('create_dept.html', title='New Department',
                            form=form, legend='New Department')
 
-<<<<<<< HEAD
-
-=======
->>>>>>> 1616260c37064c591344980edc1fc85d9d45029a
 @app.route("/loc/new", methods=['GET', 'POST'])
 @login_required
 def new_loc():
@@ -275,7 +255,6 @@ def new_loc():
         return redirect(url_for('home'))
     return render_template('create_loc.html', title='New Location',
                            form=form, legend='New Location')
-<<<<<<< HEAD
 
 
 @app.route("/vehicle/<vid>")
@@ -296,8 +275,6 @@ def delete_v(vid):
     db.session.commit()
     flash('The Vehicle has been deleted!', 'success')
     return redirect(url_for('home'))
-=======
->>>>>>> 1616260c37064c591344980edc1fc85d9d45029a
 
 """
 @app.route("/dept/<dnumber>")
