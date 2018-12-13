@@ -11,7 +11,6 @@ from sqlalchemy import or_
 from sqlalchemy import and_
 from decimal import *
 from flask import Markup
-from flask_mail import Mail, Message
 
 @app.route("/")
 def entry():
@@ -140,9 +139,6 @@ def register():
         reservation = Reservation(customerID=customer.customerID, vehicleID=vid, dateFrom=dateFrom,dateTo=dateTo,pickupLocation=pickup,dropoffLocation=dropoff)
         db.session.add(reservation)
         db.session.commit()
-        msg = Message("Feedback", recipients=[app.config['MAIL_USERNAME']])
-        msg.body = "You have received a new feedback from {} <{}>.".format(customer.fullName, customer.email)
-        mail.send(msg)
         flash('Your car has been reserved and account has been created!', 'success')
         return redirect(url_for('home'))
     return render_template('register.html', title='Register', form=form, car=car, dateTo=dateTo, dateFrom=dateFrom, diff=diff, amount=amount, tax=tax, total=total)
