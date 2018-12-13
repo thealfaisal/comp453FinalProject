@@ -12,8 +12,10 @@ from sqlalchemy import and_
 from decimal import *
 from flask import Markup
 
-
 @app.route("/")
+def entry():
+    return render_template('entry.html', title='entry')
+
 @app.route("/home", methods=['GET','POST'])
 def home():
     form = SearchForm()
@@ -33,6 +35,10 @@ def list():
     dateTo = datetime.strptime("{} {}".format(Pickupdate, Pickuptime), "%Y-%m-%d %H:%M:%S")
     dateFrom = datetime.strptime("{} {}".format(Dropoffdate,Dropofftime), "%Y-%m-%d %H:%M:%S")
     if(dateTo < datetime.now()):
+<<<<<<< HEAD
+=======
+
+>>>>>>> 83138245da9360e60ca1e56589d4acbcd7ec25f6
         flash('The Pickup date can not be in the past. Please check the Pickup date', 'danger')
         return redirect(url_for('home'))
     if(dateFrom < datetime.now()):
@@ -40,6 +46,17 @@ def list():
         return redirect(url_for('home'))
     if(dateFrom <= dateTo):
         flash('The Dropoff date can not be before the Pickup date. Please check the Dropoff date', 'danger')
+<<<<<<< HEAD
+=======
+        flash('Pickup date should be today date or later', 'danger')
+        return redirect(url_for('home'))
+    if(dateFrom < datetime.now()):
+        flash('Dropoff date should be today date or later', 'danger')
+        return redirect(url_for('home'))
+    if(dateFrom <= dateTo):
+        flash('Pickup date should be less than or equal to Dropoff date', 'danger')
+
+>>>>>>> 83138245da9360e60ca1e56589d4acbcd7ec25f6
         return redirect(url_for('home'))
     results = Vehicle.query.join(Location,Vehicle.locationID == Location.locationID) \
     .join(Reservation,Vehicle.vehicleID == Reservation.vehicleID)\
@@ -192,11 +209,13 @@ def account():
     return render_template('account.html', title='Account',
                            image_file=image_file, form=form)
 
-@app.route("/vechicle/new", methods=['GET','POST'])
+
+@app.route("/vehicle/new", methods=['GET', 'POST'])
 @login_required
 def new_vehicle():
     if current_user.is_authenticated and (current_user.admin != True):
         return redirect(url_for('home'))
+
     form = VehicleForm()
     if form.validate_on_submit():
         loc = Location.query.get_or_404(form.locationName.data)
@@ -222,9 +241,18 @@ def new_dept():
     return render_template('create_dept.html', title='New Department',
                            form=form, legend='New Department')
 
+<<<<<<< HEAD
+=======
+
+
+
+
+>>>>>>> 83138245da9360e60ca1e56589d4acbcd7ec25f6
 @app.route("/loc/new", methods=['GET', 'POST'])
 @login_required
 def new_loc():
+    if current_user.is_authenticated and (current_user.admin != True):
+        return redirect(url_for('home'))
     form = LocationForm()
     if form.validate_on_submit():
         loc = Location(locationName=form.LocationName.data, city=form.City.data,state=form.State.data,zipcode=form.Zipcode.data)
@@ -234,6 +262,10 @@ def new_loc():
         return redirect(url_for('home'))
     return render_template('create_loc.html', title='New Location',
                            form=form, legend='New Location')
+<<<<<<< HEAD
+=======
+
+>>>>>>> 83138245da9360e60ca1e56589d4acbcd7ec25f6
 
 """
 @app.route("/dept/<dnumber>")
