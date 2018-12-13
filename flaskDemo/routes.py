@@ -181,11 +181,13 @@ def account():
     return render_template('account.html', title='Account',
                            image_file=image_file, form=form)
 
-@app.route("/vechicle/new", methods=['GET','POST'])
+
+@app.route("/vehicle/new", methods=['GET', 'POST'])
 @login_required
 def new_vehicle():
     if current_user.is_authenticated and (current_user.admin != True):
         return redirect(url_for('home'))
+
     form = VehicleForm()
     if form.validate_on_submit():
         loc = Location.query.get_or_404(form.locationName.data)
@@ -214,6 +216,8 @@ def new_dept():
 @app.route("/loc/new", methods=['GET', 'POST'])
 @login_required
 def new_loc():
+    if current_user.is_authenticated and (current_user.admin != True):
+        return redirect(url_for('home'))
     form = LocationForm()
     if form.validate_on_submit():
         loc = Location(locationName=form.LocationName.data, city=form.City.data,state=form.State.data,zipcode=form.Zipcode.data)
