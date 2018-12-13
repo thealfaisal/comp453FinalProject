@@ -54,7 +54,7 @@
 	font-weight: normal;
 	cursor: pointer;
 	font-family: var(--content-font);
-	color: var(--body-text-alt);
+	color: #ffffff;
 	position: relative;
 }
 
