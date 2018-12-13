@@ -33,7 +33,6 @@ def list():
     dateTo = datetime.strptime("{} {}".format(Pickupdate, Pickuptime), "%Y-%m-%d %H:%M:%S")
     dateFrom = datetime.strptime("{} {}".format(Dropoffdate,Dropofftime), "%Y-%m-%d %H:%M:%S")
     if(dateTo < datetime.now()):
-<<<<<<< HEAD
         flash('The Pickup date can not be in the past. Please check the Pickup date', 'danger')
         return redirect(url_for('home'))
     if(dateFrom < datetime.now()):
@@ -41,15 +40,6 @@ def list():
         return redirect(url_for('home'))
     if(dateFrom <= dateTo):
         flash('The Dropoff date can not be before the Pickup date. Please check the Dropoff date', 'danger')
-=======
-        flash('Pickup date should be today date or later', 'danger')
-        return redirect(url_for('home'))
-    if(dateFrom < datetime.now()):
-        flash('Dropoff date should be today date or later', 'danger')
-        return redirect(url_for('home'))
-    if(dateFrom <= dateTo):
-        flash('Pickup date should be less than or equal to Dropoff date', 'danger')
->>>>>>> fd93a3ad47f48f0632d5793d67a7e5844f91f522
         return redirect(url_for('home'))
     results = Vehicle.query.join(Location,Vehicle.locationID == Location.locationID) \
     .join(Reservation,Vehicle.vehicleID == Reservation.vehicleID)\
@@ -106,23 +96,31 @@ def register():
     amount = diff * car.rate
     tax = Decimal(amount) * Decimal(0.1)
     total = amount + tax
-    """
-    if current_user.is_authenticated:
-        return redirect(url_for('home'))
-        datetime.datetime.strptime("{}, {}".format(date, time), "%m-%d-%Y, %H:%M")
-        """
+
+
     form = RegistrationForm()
-    if form.validate_on_submit():
+    if current_user.is_authenticated:
+        customer = Customer.query.filter_by(email=current_user.email).first()
+        reservation = Reservation(customerID=current_user.customerID, vehicleID=vid, dateFrom=dateFrom,dateTo=dateTo,pickupLocation=pickup,dropoffLocation=dropoff)
+    # """
+    # if current_user.is_authenticated:
+    #     return redirect(url_for('home'))
+    #     datetime.datetime.strptime("{}, {}".format(date, time), "%m-%d-%Y, %H:%M")
+    #     """
+
+    elif form.validate_on_submit():
         hashed_password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
         customer = Customer(username=form.username.data, email=form.email.data, password=hashed_password,fullName=form.fullname.data,phoneNumber=form.phonenumber.data)
         db.session.add(customer)
         db.session.commit()
         customer = Customer.query.filter_by(email=form.email.data).first()
         reservation = Reservation(customerID=customer.customerID, vehicleID=vid, dateFrom=dateFrom,dateTo=dateTo,pickupLocation=pickup,dropoffLocation=dropoff)
-        db.session.add(reservation)
-        db.session.commit()
-        flash('Your car has been reserved and account has been created!', 'success')
-        return redirect(url_for('home'))
+
+    db.session.add(reservation)
+    db.session.commit()
+
+    flash('Your car has been reserved and account has been created!', 'success')
+    return redirect(url_for('home'))
     return render_template('register.html', title='Register', form=form, car=car, dateTo=dateTo, dateFrom=dateFrom, diff=diff, amount=amount, tax=tax, total=total)
 
 
@@ -224,10 +222,6 @@ def new_dept():
     return render_template('create_dept.html', title='New Department',
                            form=form, legend='New Department')
 
-<<<<<<< HEAD
-
-
-=======
 @app.route("/loc/new", methods=['GET', 'POST'])
 @login_required
 def new_loc():
@@ -240,7 +234,6 @@ def new_loc():
         return redirect(url_for('home'))
     return render_template('create_loc.html', title='New Location',
                            form=form, legend='New Location')
->>>>>>> fd93a3ad47f48f0632d5793d67a7e5844f91f522
 
 """
 @app.route("/dept/<dnumber>")
