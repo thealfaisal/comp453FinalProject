@@ -35,7 +35,6 @@ def list():
     dateFrom = datetime.strptime("{} {}".format(Pickupdate, Pickuptime), "%Y-%m-%d %H:%M:%S")
     dateTo = datetime.strptime("{} {}".format(Dropoffdate,Dropofftime), "%Y-%m-%d %H:%M:%S")
     if(dateFrom < datetime.now()):
-
         flash('The Pickup date can not be in the past. Please check the Pickup date', 'danger')
         return redirect(url_for('home'))
     if(dateTo < datetime.now()):
@@ -218,12 +217,11 @@ def new_vehicle():
 
     form = VehicleForm()
     if form.validate_on_submit():
-        loc = Location.query.get_or_404(form.locationName.data)
-        veh = Vehicle(BrandName=form.BrandName.data, plateNumber=form.PlateNumber.data,ModelName=form.Model.data,Year=form.Year.data,style=form.Style.data,Transmission=form.transmission.data,TrimLevel=form.trimLevel.data,rate=form.Rate.data,locationID=loc.locationID)
+        veh = Vehicle(BrandName=form.BrandName.data, plateNumber=form.PlateNumber.data,ModelName=form.Model.data,Year=form.Year.data,style=form.Style.data,Transmission=form.Transmission.data,TrimLevel=form.trimLevel.data,rate=form.Rate.data,locationID=loc.locationID)
         db.session.add(veh)
         db.session.commit()
         flash('You have added a new vehicle!', 'success')
-        return redirect(url_for('admin'))
+        return redirect(url_for('home'))
     return render_template('create_vehicle.html', title='New Vehicle',
                            form=form, legend='New Vehicle')
 
