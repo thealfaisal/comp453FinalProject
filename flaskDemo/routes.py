@@ -217,7 +217,7 @@ def new_vehicle():
 
     form = VehicleForm()
     if form.validate_on_submit():
-        veh = Vehicle(BrandName=form.BrandName.data, plateNumber=form.PlateNumber.data,ModelName=form.Model.data,Year=form.Year.data,style=form.Style.data,Transmission=form.Transmission.data,TrimLevel=form.trimLevel.data,rate=form.Rate.data,locationID=loc.locationID)
+        veh = Vehicle(BrandName=form.BrandName.data, plateNumber=form.PlateNumber.data,ModelName=form.Model.data,Year=form.Year.data,style=form.Style.data,transmission=form.Transmission.data,trimLevel=form.TrimLevel.data,rate=form.Rate.data,locationID=form.locationName.data )
         db.session.add(veh)
         db.session.commit()
         flash('You have added a new vehicle!', 'success')

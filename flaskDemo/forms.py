@@ -20,7 +20,7 @@ models = Model.query.with_entities(Model.ModelName).distinct()
 transm = [(0,"Manual"),(1,"Automatic")]
 
 myChoices2 = [(row[1],row[1]) for row in locs]  # change
-
+myChoices3 = [(row[0],row[0]) for row in locs]
 # """
 # results=list()
 # for row in ssns:
@@ -111,7 +111,7 @@ class VehicleForm(FlaskForm):
     Transmission = SelectField("Transmission", choices=tranChoices)
     TrimLevel = SelectField("Trim", choices=trimChoices)
     Rate = DecimalField(places=2, validators=[DataRequired()])
-    locationName = SelectField("Location", choices=myChoices2)
+    locationName = SelectField("Location",coerce=int, choices=myChoices3)
     submit = SubmitField('Add')
 
 class LocationForm(FlaskForm):
