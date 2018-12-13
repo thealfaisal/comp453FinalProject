@@ -1,0 +1,26 @@
+{% extends "layout.html" %}
+{% block content %}
+     <div class="content-section">
+         <h5>Vehicle List</h5>
+         <hr>
+         <table class="table table-striped">
+           <thead>
+             <tr>
+               <th scope="col">Brand Name</th>
+               <th scope="col">Plate Number</th>
+               <th scope="col">Model</th>
+             </tr>
+           </thead>
+           <tbody>
+             {% for row in vehicles %}
+             <tr>
+               <th>{{ row.BrandName }}</th>
+               <td>{{ row.plateNumber }}</td>
+               <td>{{ row.ModelName }}</td>
+               <td><a class="article-title" href="{{ url_for('delete_vehicle', vid=row.vehicleID) }}">Delete</a></td>
+             </tr>
+             {% endfor %}
+           </tbody>
+         </table>
+       </div>
+{% endblock content %}

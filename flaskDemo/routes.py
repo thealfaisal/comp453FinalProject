@@ -35,10 +35,6 @@ def list():
     dateTo = datetime.strptime("{} {}".format(Pickupdate, Pickuptime), "%Y-%m-%d %H:%M:%S")
     dateFrom = datetime.strptime("{} {}".format(Dropoffdate,Dropofftime), "%Y-%m-%d %H:%M:%S")
     if(dateTo < datetime.now()):
-<<<<<<< HEAD
-=======
-
->>>>>>> 83138245da9360e60ca1e56589d4acbcd7ec25f6
         flash('The Pickup date can not be in the past. Please check the Pickup date', 'danger')
         return redirect(url_for('home'))
     if(dateFrom < datetime.now()):
@@ -46,8 +42,6 @@ def list():
         return redirect(url_for('home'))
     if(dateFrom <= dateTo):
         flash('The Dropoff date can not be before the Pickup date. Please check the Dropoff date', 'danger')
-<<<<<<< HEAD
-=======
         flash('Pickup date should be today date or later', 'danger')
         return redirect(url_for('home'))
     if(dateFrom < datetime.now()):
@@ -55,8 +49,6 @@ def list():
         return redirect(url_for('home'))
     if(dateFrom <= dateTo):
         flash('Pickup date should be less than or equal to Dropoff date', 'danger')
-
->>>>>>> 83138245da9360e60ca1e56589d4acbcd7ec25f6
         return redirect(url_for('home'))
     results = Vehicle.query.join(Location,Vehicle.locationID == Location.locationID) \
     .join(Reservation,Vehicle.vehicleID == Reservation.vehicleID)\
@@ -65,6 +57,15 @@ def list():
     .add_columns(Vehicle.style, Vehicle.BrandName, Vehicle.rate, Vehicle.ModelName,Vehicle.trimLevel,Vehicle.vehicleID, Vehicle.Year, Vehicle.transmission)
     return render_template('list.html', title='Cars List', pickup=Pickup, Dropoff=Dropoff, dateTo=dateTo, dateFrom=dateFrom, results=results)
 
+
+
+@app.route("/vehiclelist")
+@login_required
+def vehlist():
+    if current_user.is_authenticated and (current_user.admin != True):
+        return redirect(url_for('home'))
+    vehicles = Vehicle.query.all()
+    return render_template('vehlist.html', title='veh_list',vehicles=vehicles)
 
 @app.route("/about")
 def about():
@@ -241,13 +242,7 @@ def new_dept():
     return render_template('create_dept.html', title='New Department',
                            form=form, legend='New Department')
 
-<<<<<<< HEAD
-=======
 
-
-
-
->>>>>>> 83138245da9360e60ca1e56589d4acbcd7ec25f6
 @app.route("/loc/new", methods=['GET', 'POST'])
 @login_required
 def new_loc():
@@ -262,10 +257,26 @@ def new_loc():
         return redirect(url_for('home'))
     return render_template('create_loc.html', title='New Location',
                            form=form, legend='New Location')
-<<<<<<< HEAD
-=======
 
->>>>>>> 83138245da9360e60ca1e56589d4acbcd7ec25f6
+
+@app.route("/vehicle/<vid>")
+@login_required
+def delete_vehicle(vid):
+    if current_user.is_authenticated and (current_user.admin != True):
+        return redirect(url_for('home'))
+    veh = Vehicle.query.get_or_404(vid)
+    return render_template('delete_veh.html', title=veh.vehicleID, veh=veh, now=datetime.utcnow())
+
+@app.route("/vehicle/<vid>/delete", methods=['POST'])
+@login_required
+def delete_v(vid):
+    if current_user.is_authenticated and (current_user.admin != True):
+        return redirect(url_for('home'))
+    veh = Vehicle.query.get_or_404(vid)
+    db.session.delete(veh)
+    db.session.commit()
+    flash('The Vehicle has been deleted!', 'success')
+    return redirect(url_for('home'))
 
 """
 @app.route("/dept/<dnumber>")
