@@ -27,15 +27,15 @@
 			</symbol>
 		</svg>
 		<main>
-			
+
 			</div>
 			<div class="content">
 				<nav class="page-nav">
-					<a class="page-nav__item" href="#">Home</a>
-					<a class="page-nav__item" href="#">About</a>
-					<a class="page-nav__item" href="#">Account</a>
-					<a class="page-nav__item" href="#">Login</a>
-					<a class="page-nav__item" href="#">Register</a>
+                    <a class="page-nav__item" href="{{ url_for('home') }}">Home</a>
+    					<a class="page-nav__item" href="{{ url_for('about') }}">About</a>
+    					<a class="page-nav__item" href="{{ url_for('account') }}">Account</a>
+    					<a class="page-nav__item" href="{{ url_for('login') }}">Login</a>
+    					<a class="page-nav__item" href="{{ url_for('register') }}">Register</a>
 					<a class="page-nav__item page-nav__item--close" href="#">Back</a>
 				</nav>
 				<div class="pieces" style="background-image: url(img/car.jpg)"></div>
@@ -79,15 +79,15 @@
 						return -1*maxDelay/maxDist*dist + maxDelay;
 					},
 					easing: [0.1,1,0,1],
-					translateX: (t,i) => { 
+					translateX: (t,i) => {
 						return t.dataset.column < piecesObj.getTotalColumns()/2 ? anime.random(-400,0) : anime.random(0,400);
 					},
-					translateY: (t,i) => { 
+					translateY: (t,i) => {
 						return t.dataset.row < piecesObj.getTotalRows()/2 ? anime.random(-400,0) : anime.random(0,400);
 					},
 					opacity: 0.2
 				});
-				
+
 				anime.remove(optionsCtrl);
 				anime({
 					targets: optionsCtrl,
@@ -131,7 +131,7 @@
 					translateY: 0,
 					opacity: 1
 				});
-				
+
 				anime.remove(optionsCtrl);
 				anime({
 					targets: optionsCtrl,
