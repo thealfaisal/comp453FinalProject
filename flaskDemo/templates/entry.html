@@ -9,10 +9,9 @@
 		<meta name="author" content="Codrops" />
 		<link rel="shortcut icon" href="favicon.ico">
 		<link href="https://fonts.googleapis.com/css?family=Cormorant+Garamond" rel="stylesheet">
-		<link rel="stylesheet" type="text/css" href="css/normalize.css" />
-		<link rel="stylesheet" type="text/css" href="css/demo.css" />
-		<link rel="stylesheet" type="text/css" href="css/demo-entry.css" />
-		<link rel="stylesheet" type="text/css" href="pater/pater.css" />
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='normalize.css') }}">
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='demo.css') }}">
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='demo-entry.css') }}">
 		<script>document.documentElement.className = 'js';</script>
 	</head>
 	<body class="demo-grid loading">
@@ -35,16 +34,17 @@
     					<a class="page-nav__item" href="{{ url_for('about') }}">About</a>
     					<a class="page-nav__item" href="{{ url_for('account') }}">Account</a>
     					<a class="page-nav__item" href="{{ url_for('login') }}">Login</a>
-    					<a class="page-nav__item" href="{{ url_for('register') }}">Register</a>
+
 					<a class="page-nav__item page-nav__item--close" href="#">Back</a>
 				</nav>
-				<div class="pieces" style="background-image: url(img/car.jpg)"></div>
-				<h2 class="content__title">Explore</h2>
+                <div class="pieces" style="background-image: url(static/car.jpg)"></div>
+								<h2 class="content__title">Explore</h2>
 			</div>
 		</main>
-		<script src="js/imagesloaded.pkgd.min.js"></script>
-		<script src="js/anime.min.js"></script>
-		<script src="js/main.js"></script>
+        	<script src={{ url_for('static', filename='imagesloaded.pkgd.min.js') }}></script>
+            <script src={{ url_for('static', filename='anime.min.js') }}></script>
+            <script src={{ url_for('static', filename='main.js') }}></script>
+
 		<script>
 		{
 			imagesLoaded(document.body, { background: true }, () => document.body.classList.remove('loading'));
@@ -156,6 +156,5 @@
 			closeOptionsCtrl.addEventListener('click', hideOptions);
 		}
 		</script>
-		<script src="pater/pater.js"></script>
-	</body>
+			</body>
 </html>

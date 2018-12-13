@@ -47,6 +47,19 @@ class Customer(db.Model,UserMixin):
 class Vehicle(db.Model):
     __table__ = db.Model.metadata.tables['vehicle']
 
+# These four models below are created only for the purpose of lookup, not part of the actual DB design
+class Trim(db.Model):
+    __table__ = db.Model.metadata.tables['Trim']
+
+class Style(db.Model):
+    __table__ = db.Model.metadata.tables['Style']
+
+class Brand(db.Model):
+    __table__ = db.Model.metadata.tables['brand']
+
+class Model(db.Model):
+    __table__ = db.Model.metadata.tables['Model']
+
 # used for query_factory
 """
 def getDepartment(columns=None):
